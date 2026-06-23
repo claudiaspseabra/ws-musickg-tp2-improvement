@@ -1,0 +1,242 @@
+@prefix base: <http://musickg.org/> .
+@prefix music: <http://musickg.org/ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema1: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://musickg.org/era/Classic_Era> a music:ReleaseEra ;
+    rdfs:label "Classic Era" ;
+    rdfs:comment "Release era for albums and tracks released before 2000" .
+
+<http://musickg.org/era/Modern_Era> a music:ReleaseEra ;
+    rdfs:label "Modern Era" ;
+    rdfs:comment "Release era for albums and tracks released from 2010 onward" .
+
+<http://musickg.org/era/Transition_Era> a music:ReleaseEra ;
+    rdfs:label "Transition Era" ;
+    rdfs:comment "Release era for albums and tracks released from 2000 through 2009" .
+
+base:ontology a owl:Ontology ;
+    rdfs:label "Music Knowledge Graph Ontology" .
+
+music:ClassicTrack a owl:Class ;
+    rdfs:label "ClassicTrack" ;
+    rdfs:comment "A track released before 2000" ;
+    rdfs:subClassOf music:Track .
+
+music:HighEnergyTrack a owl:Class ;
+    rdfs:label "HighEnergyTrack" ;
+    rdfs:comment "A track whose normalized energy score is at least 0.75" ;
+    rdfs:subClassOf music:Track .
+
+music:ModernTrack a owl:Class ;
+    rdfs:label "ModernTrack" ;
+    rdfs:comment "A track released from 2010 onward" ;
+    rdfs:subClassOf music:Track .
+
+music:PopularTrack a owl:Class ;
+    rdfs:label "PopularTrack" ;
+    rdfs:comment "A track whose popularity score is at least 70" ;
+    rdfs:subClassOf music:Track .
+
+music:albumName a owl:DatatypeProperty ;
+    rdfs:label "albumName" ;
+    rdfs:comment "Human-readable album name" ;
+    rdfs:domain music:Album ;
+    rdfs:range xsd:string .
+
+music:artistName a owl:DatatypeProperty ;
+    rdfs:label "artistName" ;
+    rdfs:comment "Human-readable artist name" ;
+    rdfs:domain music:Artist ;
+    rdfs:range xsd:string .
+
+music:belongsToEra a owl:ObjectProperty ;
+    rdfs:label "belongsToEra" ;
+    rdfs:comment "Links an album or track to a broad release era" ;
+    rdfs:domain rdfs:Resource ;
+    rdfs:range music:ReleaseEra .
+
+music:danceability a owl:DatatypeProperty ;
+    rdfs:label "danceability" ;
+    rdfs:comment "Spotify danceability score in the range 0 to 1" ;
+    rdfs:domain music:AudioFeatures ;
+    rdfs:range xsd:float .
+
+music:dbpediaAbstract a owl:DatatypeProperty ;
+    rdfs:label "dbpediaAbstract" ;
+    rdfs:comment "English DBpedia abstract or description imported during optional linked-data enrichment" ;
+    rdfs:domain rdfs:Resource ;
+    rdfs:range xsd:string .
+
+music:durationMs a owl:DatatypeProperty ;
+    rdfs:label "durationMs" ;
+    rdfs:comment "Track duration in milliseconds" ;
+    rdfs:domain music:Track ;
+    rdfs:range xsd:integer .
+
+music:energy a owl:DatatypeProperty ;
+    rdfs:label "energy" ;
+    rdfs:comment "Spotify energy score in the range 0 to 1" ;
+    rdfs:domain music:AudioFeatures ;
+    rdfs:range xsd:float .
+
+music:energyLevel a owl:DatatypeProperty ;
+    rdfs:label "energyLevel" ;
+    rdfs:comment "Derived low, medium, or high energy label" ;
+    rdfs:domain music:AudioProfile ;
+    rdfs:range xsd:string .
+
+music:hasAlbum a owl:ObjectProperty ;
+    rdfs:label "hasAlbum" ;
+    rdfs:comment "Links an artist to an album they released" ;
+    rdfs:domain music:Artist ;
+    rdfs:range music:Album .
+
+music:hasAudioFeatures a owl:ObjectProperty ;
+    rdfs:label "hasAudioFeatures" ;
+    rdfs:comment "Links a track to its normalized Spotify audio-feature node" ;
+    rdfs:domain music:Track ;
+    rdfs:range music:AudioFeatures .
+
+music:hasAudioProfile a owl:ObjectProperty ;
+    rdfs:label "hasAudioProfile" ;
+    rdfs:comment "Links a track to a derived audio profile used for rule-based classification" ;
+    rdfs:domain music:Track ;
+    rdfs:range music:AudioProfile .
+
+music:hasTrack a owl:ObjectProperty ;
+    rdfs:label "hasTrack" ;
+    rdfs:comment "Links an album to a track included on it" ;
+    rdfs:domain music:Album ;
+    rdfs:range music:Track .
+
+music:inGenre a owl:ObjectProperty ;
+    rdfs:label "inGenre" ;
+    rdfs:comment "Links a track to its playlist or musical genre" ;
+    rdfs:domain music:Track ;
+    rdfs:range music:Genre .
+
+music:loudness a owl:DatatypeProperty ;
+    rdfs:label "loudness" ;
+    rdfs:comment "Normalized loudness value in the range 0 to 1" ;
+    rdfs:domain music:AudioFeatures ;
+    rdfs:range xsd:float .
+
+music:officialWebsite a owl:ObjectProperty ;
+    rdfs:label "officialWebsite" ;
+    rdfs:comment "Links an artist or genre to an official website discovered from linked data" ;
+    rdfs:domain rdfs:Resource ;
+    rdfs:range rdfs:Resource .
+
+music:originPlace a owl:ObjectProperty ;
+    rdfs:label "originPlace" ;
+    rdfs:comment "Links an artist or genre to an externally sourced origin or birth place" ;
+    rdfs:domain rdfs:Resource ;
+    rdfs:range rdfs:Resource .
+
+music:popularity a owl:DatatypeProperty ;
+    rdfs:label "popularity" ;
+    rdfs:comment "Spotify track popularity score from 0 to 100" ;
+    rdfs:domain music:Track ;
+    rdfs:range xsd:integer .
+
+music:popularityLevel a owl:DatatypeProperty ;
+    rdfs:label "popularityLevel" ;
+    rdfs:comment "Derived low, medium, or high popularity label" ;
+    rdfs:domain music:Track ;
+    rdfs:range xsd:string .
+
+music:releaseYear a owl:DatatypeProperty ;
+    rdfs:label "releaseYear" ;
+    rdfs:comment "Album release year extracted from Spotify metadata" ;
+    rdfs:domain music:Album ;
+    rdfs:range xsd:integer .
+
+music:sharedGenreWith a owl:ObjectProperty,
+        owl:SymmetricProperty ;
+    rdfs:label "sharedGenreWith" ;
+    rdfs:comment "Symmetric relation between tracks assigned to the same genre" ;
+    rdfs:domain music:Track ;
+    rdfs:range music:Track .
+
+music:similarTo a owl:ObjectProperty,
+        owl:SymmetricProperty ;
+    rdfs:label "similarTo" ;
+    rdfs:comment "Symmetric artist-to-artist similarity based on audio-feature averages" ;
+    rdfs:domain music:Artist ;
+    rdfs:range music:Artist .
+
+music:tempo a owl:DatatypeProperty ;
+    rdfs:label "tempo" ;
+    rdfs:comment "Normalized tempo value in the range 0 to 1" ;
+    rdfs:domain music:AudioFeatures ;
+    rdfs:range xsd:float .
+
+music:trackName a owl:DatatypeProperty ;
+    rdfs:label "trackName" ;
+    rdfs:comment "Human-readable track title" ;
+    rdfs:domain music:Track ;
+    rdfs:range xsd:string .
+
+music:valence a owl:DatatypeProperty ;
+    rdfs:label "valence" ;
+    rdfs:comment "Spotify valence score in the range 0 to 1" ;
+    rdfs:domain music:AudioFeatures ;
+    rdfs:range xsd:float .
+
+music:wikidataEntity a owl:ObjectProperty ;
+    rdfs:label "wikidataEntity" ;
+    rdfs:comment "Links a local resource to its associated Wikidata entity" ;
+    rdfs:domain rdfs:Resource ;
+    rdfs:range rdfs:Resource .
+
+music:Genre a owl:Class ;
+    rdfs:label "Genre" ;
+    rdfs:comment "A musical genre category" ;
+    rdfs:subClassOf schema1:MusicGenre .
+
+music:performedBy a owl:ObjectProperty ;
+    rdfs:label "performedBy" ;
+    rdfs:comment "Links a track to the artist that performs it" ;
+    rdfs:domain music:Track ;
+    rdfs:range music:Artist ;
+    owl:inverseOf music:performs .
+
+music:performs a owl:ObjectProperty ;
+    rdfs:label "performs" ;
+    rdfs:comment "Links an artist to a track they perform" ;
+    rdfs:domain music:Artist ;
+    rdfs:range music:Track ;
+    owl:inverseOf music:performedBy .
+
+music:AudioProfile a owl:Class ;
+    rdfs:label "AudioProfile" ;
+    rdfs:comment "A derived audio profile used to classify a track by listening characteristics" ;
+    rdfs:subClassOf music:AudioFeatures .
+
+music:Album a owl:Class ;
+    rdfs:label "Album" ;
+    rdfs:comment "A music album released by an artist" ;
+    rdfs:subClassOf schema1:MusicAlbum .
+
+music:ReleaseEra a owl:Class ;
+    rdfs:label "ReleaseEra" ;
+    rdfs:comment "A temporal release grouping such as Classic Era, Transition Era, or Modern Era" .
+
+music:Artist a owl:Class ;
+    rdfs:label "Artist" ;
+    rdfs:comment "A music artist or group" ;
+    rdfs:subClassOf schema1:MusicGroup ;
+    owl:disjointWith music:Track .
+
+music:AudioFeatures a owl:Class ;
+    rdfs:label "AudioFeatures" ;
+    rdfs:comment "Audio analysis features extracted from a track" .
+
+music:Track a owl:Class ;
+    rdfs:label "Track" ;
+    rdfs:comment "A single music recording" ;
+    rdfs:subClassOf schema1:MusicRecording .
+

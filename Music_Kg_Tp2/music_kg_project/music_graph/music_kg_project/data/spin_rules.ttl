@@ -1,0 +1,96 @@
+@prefix music: <http://musickg.org/ontology#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sp: <http://spinrdf.org/sp#> .
+@prefix spin: <http://spinrdf.org/spin#> .
+
+music:Artist spin:rule music:InferPerformsFromAlbumTracksRule,
+        music:InferSymmetricSimilarToRule .
+
+music:Track spin:rule music:ClassifyHighEnergyTrackRule,
+        music:ClassifyPopularTrackRule,
+        music:ClassifyReleaseEraRule .
+
+music:ClassifyHighEnergyTrackRule a sp:Construct,
+        spin:Rule ;
+    rdfs:label "Classify high energy tracks" ;
+    sp:text """PREFIX music: <http://musickg.org/ontology#>
+        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+        CONSTRUCT {
+          ?track a music:HighEnergyTrack .
+          ?profile music:energyLevel "High" .
+        }
+        WHERE {
+          ?track music:hasAudioProfile ?profile .
+          ?profile music:energy ?energy .
+          FILTER (xsd:decimal(?energy) >= 0.75)
+        }""" ;
+    rdfs:comment "Classifies tracks as music:HighEnergyTrack when their audio profile energy is at least 0.75." .
+
+music:ClassifyPopularTrackRule a sp:Construct,
+        spin:Rule ;
+    rdfs:label "Classify popular tracks" ;
+    sp:text """PREFIX music: <http://musickg.org/ontology#>
+        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+        CONSTRUCT {
+          ?track a music:PopularTrack .
+          ?track music:popularityLevel "High" .
+        }
+        WHERE {
+          ?track music:popularity ?popularity .
+          FILTER (xsd:integer(?popularity) >= 70)
+        }""" ;
+    rdfs:comment "Classifies tracks as music:PopularTrack when their popularity score is at least 70." .
+
+music:ClassifyReleaseEraRule a sp:Construct,
+        spin:Rule ;
+    rdfs:label "Classify release eras" ;
+    sp:text """PREFIX music: <http://musickg.org/ontology#>
+        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+        CONSTRUCT {
+          ?album music:belongsToEra ?era .
+          ?track music:belongsToEra ?era .
+          ?track a ?trackClass .
+        }
+        WHERE {
+          ?album music:hasTrack ?track ;
+                 music:releaseYear ?year .
+          BIND(xsd:integer(?year) AS ?releaseYear)
+          BIND(
+            IF(?releaseYear >= 2010, <http://musickg.org/era/Modern_Era>,
+              IF(?releaseYear < 2000, <http://musickg.org/era/Classic_Era>, <http://musickg.org/era/Transition_Era>)
+            ) AS ?era
+          )
+          BIND(
+            IF(?releaseYear >= 2010, music:ModernTrack,
+              IF(?releaseYear < 2000, music:ClassicTrack, music:Track)
+            ) AS ?trackClass
+          )
+        }""" ;
+    rdfs:comment "Classifies albums and tracks into broad release eras using album release years." .
+
+music:InferPerformsFromAlbumTracksRule a sp:Construct,
+        spin:Rule ;
+    rdfs:label "Infer performs from albums and tracks" ;
+    sp:text """PREFIX music: <http://musickg.org/ontology#>
+        CONSTRUCT {
+          ?artist music:performs ?track .
+        }
+        WHERE {
+          ?artist music:hasAlbum ?album .
+          ?album music:hasTrack ?track .
+        }""" ;
+    rdfs:comment "Infers music:performs when an artist has an album and that album has a track." .
+
+music:InferSymmetricSimilarToRule a sp:Construct,
+        spin:Rule ;
+    rdfs:label "Infer symmetric similarTo links" ;
+    sp:text """PREFIX music: <http://musickg.org/ontology#>
+        CONSTRUCT {
+          ?right music:similarTo ?left .
+        }
+        WHERE {
+          ?left music:similarTo ?right .
+          FILTER (?left != ?right)
+        }""" ;
+    rdfs:comment "Infers the reverse music:similarTo relation for artist similarity links." .
+

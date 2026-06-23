@@ -1,0 +1,39 @@
+@prefix music: <http://musickg.org/ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+<http://musickg.org/artist/Armin_van_Buuren> music:wikidataEntity <http://www.wikidata.org/entity/Q62617> ;
+    owl:sameAs <http://www.wikidata.org/entity/Q62617> .
+
+<http://musickg.org/artist/Baby_K> music:originPlace <http://dbpedia.org/resource/Falls_Church,_Virginia> ;
+    music:wikidataEntity <http://www.wikidata.org/entity/Q2813350> ;
+    owl:sameAs <http://www.wikidata.org/entity/Q2813350> .
+
+<http://musickg.org/artist/Black_Sabbath> music:wikidataEntity <http://www.wikidata.org/entity/Q47670> ;
+    owl:sameAs <http://www.wikidata.org/entity/Q47670> .
+
+<http://musickg.org/artist/Cutting_Crew> music:officialWebsite <https://twitter.com/The_CuttingCrew> ;
+    music:wikidataEntity <http://www.wikidata.org/entity/Q977526> ;
+    owl:sameAs <http://www.wikidata.org/entity/Q977526> .
+
+<http://musickg.org/artist/Deva_Mahal> music:wikidataEntity <http://www.wikidata.org/entity/Q50822230> ;
+    owl:sameAs <http://www.wikidata.org/entity/Q50822230> .
+
+<http://musickg.org/artist/Diego_Torres> music:wikidataEntity <http://www.wikidata.org/entity/Q8559873> ;
+    owl:sameAs <http://www.wikidata.org/entity/Q8559873> .
+
+<http://musickg.org/artist/Flamma> music:wikidataEntity <http://www.wikidata.org/entity/Q56403459> ;
+    owl:sameAs <http://www.wikidata.org/entity/Q56403459> .
+
+<http://musickg.org/artist/Hansie> music:wikidataEntity <http://www.wikidata.org/entity/Q5651134> ;
+    owl:sameAs <http://www.wikidata.org/entity/Q5651134> .
+
+<http://musickg.org/artist/Manse> music:wikidataEntity <http://www.wikidata.org/entity/Q17051104> ;
+    owl:sameAs <http://www.wikidata.org/entity/Q17051104> .
+
+<http://musickg.org/artist/Tribo_da_Periferia> music:officialWebsite <https://tribodaperiferia.com.br/> ;
+    music:wikidataEntity <http://www.wikidata.org/entity/Q104850148> ;
+    owl:sameAs <http://www.wikidata.org/entity/Q104850148> .
+
+<http://musickg.org/artist/Two_Figures> music:wikidataEntity <http://www.wikidata.org/entity/Q7858950> ;
+    owl:sameAs <http://www.wikidata.org/entity/Q7858950> .
+
