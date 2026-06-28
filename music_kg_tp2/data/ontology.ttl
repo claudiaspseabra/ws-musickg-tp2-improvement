@@ -1,0 +1,67 @@
+@prefix music: <http://musickg.org/data/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+music: a owl:Ontology ;
+    rdfs:label "Music Knowledge Graph Ontology" .
+
+music:HighEnergyTrack a owl:Class ;
+    rdfs:subClassOf music:Track .
+
+music:TrendingArtist a owl:Class ;
+    rdfs:subClassOf music:Artist .
+
+music:albumName a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+music:artistName a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+music:danceability a owl:DatatypeProperty ;
+    rdfs:range xsd:float .
+
+music:energy a owl:DatatypeProperty ;
+    rdfs:range xsd:float .
+
+music:hasTrack a owl:ObjectProperty ;
+    owl:inverseOf music:inAlbum .
+
+music:inGenre a owl:ObjectProperty ;
+    rdfs:domain music:Track ;
+    rdfs:range music:Genre .
+
+music:performs a owl:ObjectProperty ;
+    owl:inverseOf music:performedBy .
+
+music:popularity a owl:DatatypeProperty ;
+    rdfs:range xsd:integer .
+
+music:releaseYear a owl:DatatypeProperty ;
+    rdfs:range xsd:integer .
+
+music:tempo a owl:DatatypeProperty ;
+    rdfs:range xsd:float .
+
+music:trackName a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+music:valence a owl:DatatypeProperty ;
+    rdfs:range xsd:float .
+
+music:Album a owl:Class .
+
+music:Genre a owl:Class .
+
+music:inAlbum a owl:ObjectProperty ;
+    rdfs:domain music:Track ;
+    rdfs:range music:Album .
+
+music:performedBy a owl:ObjectProperty ;
+    rdfs:domain music:Track ;
+    rdfs:range music:Artist .
+
+music:Artist a owl:Class .
+
+music:Track a owl:Class .
+

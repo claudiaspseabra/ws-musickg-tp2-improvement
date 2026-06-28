@@ -1,0 +1,41 @@
+@prefix music: <http://musickg.org/data/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sp: <http://spinrdf.org/sp#> .
+@prefix spin: <http://spinrdf.org/spin#> .
+
+music:Artist spin:rule music:ClassifyTrendingArtistRule .
+
+music:Track spin:rule music:ClassifyHighEnergyTrackRule .
+
+music:ClassifyHighEnergyTrackRule a sp:Construct,
+        spin:Rule ;
+    rdfs:label "Classify High Energy Tracks" ;
+    sp:text """PREFIX music: <http://musickg.org/data/>
+        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+        CONSTRUCT {
+            ?this a music:HighEnergyTrack .
+        }
+        WHERE {
+            ?this a music:Track ;
+                  music:energy ?e .
+            FILTER (xsd:float(?e) > 0.8)
+        }""" .
+
+music:ClassifyTrendingArtistRule a sp:Construct,
+        spin:Rule ;
+    rdfs:label "Classify Trending Artists based on track popularity average" ;
+    sp:text """PREFIX music: <http://musickg.org/data/>
+        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+        CONSTRUCT {
+            ?this a music:TrendingArtist .
+        }
+        WHERE {
+            SELECT ?this WHERE {
+                ?this a music:Artist .
+                ?track music:performedBy ?this ;
+                       music:popularity ?pop .
+            }
+            GROUP BY ?this
+            HAVING (AVG(xsd:float(?pop)) >= 75.0)
+        }""" .
+

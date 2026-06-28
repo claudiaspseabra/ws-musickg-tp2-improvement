@@ -22,28 +22,57 @@
         </div>
     </div>
 
-    <div class="flex items-center gap-8 mb-10 border-b border-border-col pb-8">
-        <div class="w-32 h-32 bg-bg-card rounded-full flex items-center justify-center text-6xl border-4 border-accent shadow-[0_0_20px_rgba(30,215,96,0.15)] shrink-0">
-            🎤
+    <div vocab="http://musickg.org/data/" class="flex items-center gap-8 mb-10 border-b border-border-col pb-8 h-card" typeof="Artist" resource="{{ artist.uri }}">
+
+        <div class="w-32 h-32 rounded-full border-4 border-accent shadow-[0_0_20px_rgba(30,215,96,0.15)] shrink-0 overflow-hidden bg-bg-card">
+            {% if artist.image_url and artist.image_url != 'None' %}
+                <img src="{{ artist.image_url }}" alt="{{ artist.name }}" class="u-photo w-full h-full object-cover">
+            {% else %}
+                <div class="w-full h-full flex items-center justify-center text-6xl">🎤</div>
+            {% endif %}
         </div>
+
         <div class="flex flex-col justify-center">
-            <h1 class="text-5xl font-extrabold text-text-primary mb-4">{{ artist.name }}</h1>
+            <h1 class="p-name text-5xl font-extrabold text-text-primary mb-4" property="artistName">
+                {{ artist.name }}
+            </h1>
 
             <div class="flex flex-wrap gap-2 mb-4">
+                {% if artist.is_trending %}
+                    <span class="px-4 py-1.5 bg-accent/20 text-accent border border-accent rounded-full text-xs font-bold uppercase tracking-wider shadow-sm">
+                        🔥 Trending Artist
+                    </span>
+                {% endif %}
+
                 {% for genre in artist.genres %}
-                    <span class="px-4 py-1.5 bg-bg-hover text-text-primary border border-border-col rounded-full text-xs font-bold uppercase tracking-wider shadow-sm">
+                    <span class="p-category px-4 py-1.5 bg-bg-hover text-text-primary border border-border-col rounded-full text-xs font-bold uppercase tracking-wider" property="inGenre">
                         {{ genre }}
                     </span>
-                {% empty %}
-                    <span class="text-text-muted text-sm italic px-4 py-1.5 border border-dashed border-border-col rounded-full">No genre associated</span>
                 {% endfor %}
             </div>
 
-            <div class="flex flex-col sm:flex-row sm:items-center gap-3">
-                <a href="https://dbpedia.org/page/{{ artist.name|urlencode }}" target="_blank" class="inline-flex items-center gap-2 w-max px-3 py-1.5 text-xs font-bold transition-all">
-                    ↗ DBpedia <span class="text-[10px] opacity-70"></span>
-                </a>
+            {% if artist.abstract %}
+                <div class="bg-bg-secondary p-4 rounded-xl border border-border-col mb-6">
+                    <h3 class="text-accent text-xs font-bold uppercase mb-2">About</h3>
+                    <!-- striptags remove o <B> automaticamente -->
+                    <p class="p-note text-text-secondary text-sm leading-relaxed" property="dbpediaAbstract">
+                        {{ artist.abstract|striptags }}
+                    </p>
 
+                    {% if artist.hometown and artist.hometown != 'None' and artist.hometown != '' %}
+                        <span class="block mt-2 text-text-muted text-xs">
+                            📍 Origin: <span property="hometown">{{ artist.hometown }}</span>
+                        </span>
+                    {% endif %}
+                    </p>
+                </div>
+            {% endif %}
+
+            <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+                <!-- Usar artist.slug em vez do nome, envia "Harry_Styles" em vez de "Harry+Styles", corrigindo o erro da DBpedia -->
+                <a href="https://dbpedia.org/page/{{ artist.slug }}" target="_blank" class="u-url inline-flex items-center gap-2 w-max px-3 py-1.5 text-xs font-bold transition-all" property="sameAs">
+                    ↗ DBpedia
+                </a>
                 <p class="text-xs text-text-muted font-mono break-all px-3 py-1.5 rounded-lg border border-border-col w-max">
                     {{ artist.uri }}
                 </p>
@@ -60,22 +89,15 @@
     {% endif %}
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
-
         <div class="bg-bg-card p-6 rounded-xl border border-border-col flex flex-col justify-between">
             <h2 class="text-sm font-bold text-text-muted uppercase mb-4">RDF Operations</h2>
             <div class="flex flex-col gap-3">
-                <a href="{% url 'raw-artist' artist.slug %}" target="_blank" class="bg-bg-secondary border border-border-col text-text-primary text-center font-bold px-4 py-2 rounded hover:bg-white hover:text-black transition-colors text-sm">
-                    👁️ View RDF (DESCRIBE)
-                </a>
-                <a href="{% url 'export-artist' artist.slug %}" class="bg-bg-secondary border border-border-col text-text-primary text-center font-bold px-4 py-2 rounded hover:bg-accent hover:text-black hover:border-transparent transition-colors text-sm">
-                    📥 Export (CONSTRUCT)
-                </a>
+                <a href="{% url 'raw-artist' artist.slug %}" target="_blank" class="bg-bg-secondary border border-border-col text-text-primary text-center font-bold px-4 py-2 rounded hover:bg-white hover:text-black transition-colors text-sm">👁️ View RDF (DESCRIBE)</a>
+                <a href="{% url 'export-artist' artist.slug %}" class="bg-bg-secondary border border-border-col text-text-primary text-center font-bold px-4 py-2 rounded hover:bg-accent hover:text-black hover:border-transparent transition-colors text-sm">📥 Export (CONSTRUCT)</a>
                 <div class="h-px w-full bg-border-col my-1"></div>
                 <form action="{% url 'delete-artist' artist.slug %}" method="POST" onsubmit="return confirm('WARNING: This will permanently delete the Artist and all associated tracks. Confirm?');">
                     {% csrf_token %}
-                    <button type="submit" class="w-full bg-red-600/10 text-red-500 border border-red-500/30 font-bold px-4 py-2 rounded hover:bg-red-600 hover:text-white transition-colors text-sm">
-                        🗑️ Delete Artist
-                    </button>
+                    <button type="submit" class="w-full bg-red-600/10 text-red-500 border border-red-500/30 font-bold px-4 py-2 rounded hover:bg-red-600 hover:text-white transition-colors text-sm">🗑️ Delete Artist</button>
                 </form>
             </div>
         </div>
@@ -96,24 +118,26 @@
                     <label class="text-xs text-text-muted mb-1 block">Energy (0-1)</label>
                     <input type="number" step="0.001" min="0" max="1" name="energy" required value="0.8" class="w-full bg-bg-secondary border border-border-col rounded px-3 py-2 text-sm text-white focus:border-accent outline-none">
                 </div>
-                <button type="submit" class="w-full sm:w-auto bg-accent text-black font-bold px-6 py-2 rounded hover:bg-accent-hover text-sm h-[38px] transition-colors">
-                    Add Track
-                </button>
+                <button type="submit" class="w-full sm:w-auto bg-accent text-black font-bold px-6 py-2 rounded hover:bg-accent-hover transition-colors">Add Track</button>
             </form>
         </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
-
         <div class="lg:col-span-2">
             <div id="tracks" class="scroll-mt-28">
                 <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">🎵 Tracks in Graph</h2>
                 <div class="bg-bg-card rounded-xl overflow-hidden border border-border-col">
                     {% for track in artist.top_tracks %}
-                    <div class="flex flex-col p-4 border-b border-border-col hover:bg-bg-hover transition-colors last:border-0 group">
+                    <div class="flex flex-col p-4 border-b border-border-col hover:bg-bg-hover transition-colors group">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="font-bold text-text-primary">{{ track.name }}</p>
+                                <p class="font-bold text-text-primary flex items-center gap-2">
+                                    {{ track.name }}
+                                    {% if track.is_high_energy %}
+                                        <span class="text-[10px] bg-red-600 text-white px-1.5 rounded">⚡ High Energy</span>
+                                    {% endif %}
+                                </p>
                                 <p class="text-xs text-text-muted">{{ track.genre|title }} • Energy: {{ track.energy }}</p>
                             </div>
                             <div class="flex gap-2">
@@ -122,9 +146,7 @@
                                     <input type="hidden" name="artist_slug" value="{{ artist.slug }}">
                                     <button type="submit" class="text-red-400 hover:text-red-600 px-2 py-1 text-xs">Delete</button>
                                 </form>
-                                <a href="{% url 'track-vibe' track.slug %}" class="text-accent hover:text-accent-hover px-2 py-1 text-xs border border-transparent hover:border-accent rounded transition-all flex items-center gap-1" title="Analyze Vibe">
-                                    ✨ Vibe
-                                </a>
+                                <a href="{% url 'track-vibe' track.slug %}" class="text-accent hover:text-accent-hover px-2 py-1 text-xs border border-transparent hover:border-accent rounded transition-all flex items-center gap-1">✨ Vibe</a>
                             </div>
                         </div>
 

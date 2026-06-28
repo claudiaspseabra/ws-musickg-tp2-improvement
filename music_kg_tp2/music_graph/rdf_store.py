@@ -20,7 +20,7 @@ log = logging.getLogger(__name__)
 
 # Server Configuration
 GRAPHDB_URL = "http://localhost:7200"
-GRAPHDB_REPOSITORY = "music-kg-tp1"
+GRAPHDB_REPOSITORY = "music-kg-tp2"
 GRAPHDB_USER = "admin"
 GRAPHDB_PASS = "root"
 
@@ -85,19 +85,33 @@ class _RDFStore:
                 time.sleep(2)
 
             self._use_graphdb = True
+            data_dir = nt_path.parent
 
+            # 3. Check data and perform upload if EXACTLY empty
             count = self._graphdb_triple_count()
 
-            if count == 0 and nt_path.exists():
-                log.info("Repository is empty. Starting initial data upload...")
-                if self._upload_nt(nt_path):
-                    new_count = self._graphdb_triple_count()
-                    log.info(f"Upload complete! Inserted {new_count} triples.")
-                else:
-                    log.error("Automatic upload failed.")
-                    return False
+            if count < 500:
+                log.info("Repository appears empty or incomplete. Starting automated data pipeline...")
+                data_dir = nt_path.parent
+
+                # A ordem de importação é importante:
+                # 1º Ontologia (Schema), 2º Factos (Dados), 3º Regras SPIN (Inferência)
+                files_to_load = [
+                    data_dir / "ontology.ttl",
+                    data_dir / "facts_only.nt",
+                    data_dir / "spin_rules.ttl",
+                    data_dir / "enrichment.ttl"
+                ]
+                for f in files_to_load:
+                    self._upload_file(f)
             else:
-                log.info(f"GraphDB active with {count} triples. Skipping upload.")
+                log.info(f"Repository active with {count} triples.")
+                # Tenta carregar a nova arquitetura separada
+            enrichment_file = data_dir / "enrichment.ttl"
+            if enrichment_file.exists():
+                log.info("A aplicar camada de enriquecimento (enrichment.ttl)...")
+                self._upload_file(enrichment_file)
+
             return True
 
         except requests.exceptions.ConnectionError:
@@ -142,24 +156,42 @@ class _RDFStore:
             log.warning(f"Failed to create repository: {e}")
             return False
 
-    def _upload_nt(self, nt_path: Path) -> bool:
-        """Streaming upload via /statements."""
+    def _upload_file(self, file_path: Path) -> bool:
+        """Streaming upload via /statements with automatic Content-Type detection."""
+        if not file_path.exists():
+            log.warning(f"File not found for upload: {file_path}")
+            return False
+
+        # Detetar o formato correto para o GraphDB não rejeitar o ficheiro
+        ext = file_path.suffix.lower()
+        if ext == '.ttl':
+            content_type = 'text/turtle'
+        elif ext in ['.nt', '.ntriples']:
+            content_type = 'text/plain'  # GraphDB aceita text/plain para N-Triples
+        elif ext in ['.rdf', '.xml']:
+            content_type = 'application/rdf+xml'
+        else:
+            content_type = 'text/plain'
+
         try:
-            with open(nt_path, 'rb') as f:
+            t0 = time.time()
+            with open(file_path, 'rb') as f:
                 r = requests.post(
                     self._update_url,
                     data=f,
                     auth=(GRAPHDB_USER, GRAPHDB_PASS),
-                    headers={'Content-Type': 'application/n-triples'},
+                    headers={'Content-Type': content_type},
                     timeout=300
                 )
 
             if r.status_code in (200, 204):
+                log.info(f"Uploaded {file_path.name} in {time.time() - t0:.1f}s")
                 return True
-            log.error(f"GraphDB rejected the file. Code: {r.status_code}. Info: {r.text[:100]}")
+
+            log.error(f"GraphDB rejected {file_path.name}. Code: {r.status_code}. Info: {r.text[:100]}")
             return False
         except Exception as e:
-            log.error(f"Upload connection error: {e}")
+            log.error(f"Upload connection error for {file_path.name}: {e}")
             return False
 
     def _graphdb_triple_count(self) -> int:

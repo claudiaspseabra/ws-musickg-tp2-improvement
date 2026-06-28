@@ -17,8 +17,9 @@ _PREFIXES = """
 PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX xsd:   <http://www.w3.org/2001/XMLSchema#>
-PREFIX music: <http://musickg.org/data/>
+PREFIX music: <http://musickg.org/data/> 
 PREFIX base:  <http://musickg.org/>
+PREFIX owl:   <http://www.w3.org/2002/07/owl#>
 """
 
 def _slug(uri: str) -> str:
@@ -78,33 +79,43 @@ def get_artist_detail(artist: str) -> Optional[Dict]:
     artist_slug = artist.strip()
     artist_ref = f"<http://musickg.org/artist/{artist_slug}>"
 
-    # Basic info
+    # FASE 3 E 4: Obter os dados da DBpedia/Wikidata E as inferências SPIN!
     basic_q = _PREFIXES + f"""
-    SELECT ?name WHERE {{
-        {artist_ref} music:artistName ?name .
-    }} LIMIT 1
+        SELECT ?name ?abstract ?image ?hometown ?isTrending WHERE {{
+            {artist_ref} music:artistName ?name .
+            OPTIONAL {{ {artist_ref} music:dbpediaAbstract ?abstract . }}
+            OPTIONAL {{ {artist_ref} music:imageUrl ?image . }}
+            OPTIONAL {{ {artist_ref} music:hometown ?hometown . }}
+            OPTIONAL {{ {artist_ref} a music:TrendingArtist . BIND(true AS ?isTrending) }}
+        }} LIMIT 1
     """
     basic = store.execute_sparql(basic_q)
     if not basic:
         return None
 
-    name = str(basic[0]["name"])
+    r0 = basic[0]
+    name = str(r0["name"])
+    abstract = str(r0.get("abstract", ""))
+    image_url = str(r0.get("image", ""))
+    hometown = str(r0.get("hometown", ""))
+    is_trending = bool(r0.get("isTrending", False))
 
-    # Tracks and genres
+    # Tracks, genres E INFERÊNCIAS SPIN (HighEnergyTrack)
     tracks_q = _PREFIXES + f"""
-            SELECT ?trackUri ?trackName (GROUP_CONCAT(DISTINCT ?genreLabel; SEPARATOR=", ") AS ?genres) (SAMPLE(?energy) AS ?trackEnergy)
-            WHERE {{
-                ?trackUri music:performedBy {artist_ref} ;
-                          music:trackName ?trackName .
-                OPTIONAL {{
-                    ?trackUri music:inGenre ?g .
-                    ?trackUri music:energy ?energy .
-                    ?g music:label ?genreLabel .
+                SELECT ?trackUri ?trackName ?isHighEnergy (GROUP_CONCAT(DISTINCT ?genreLabel; SEPARATOR=", ") AS ?genres) (SAMPLE(?energy) AS ?trackEnergy)
+                WHERE {{
+                    ?trackUri music:performedBy {artist_ref} ;
+                              music:trackName ?trackName .
+                    OPTIONAL {{
+                        ?trackUri music:inGenre ?g .
+                        ?trackUri music:energy ?energy .
+                        ?g music:label ?genreLabel .
+                    }}
+                    OPTIONAL {{ ?trackUri a music:HighEnergyTrack . BIND(true AS ?isHighEnergy) }}
                 }}
-            }}
-            GROUP BY ?trackUri ?trackName
-            ORDER BY ?trackName
-            """
+                GROUP BY ?trackUri ?trackName ?isHighEnergy
+                ORDER BY ?trackName
+                """
 
     top_tracks = []
     genres_set = set()
@@ -122,26 +133,22 @@ def get_artist_detail(artist: str) -> Optional[Dict]:
             "name": str(r["trackName"]),
             "genre": genre_str if genre_str else "No genre",
             "energy": str(r.get("trackEnergy", "0.5")),
+            "is_high_energy": bool(r.get("isHighEnergy", False))  # Passado para o frontend!
         })
 
-    # Albums
+    # (O código para Albums e similar_artists mantém-se exatamente igual a partir daqui...)
     album_q = _PREFIXES + f"""
-        SELECT ?albumUri ?albumName ?year (COUNT(DISTINCT ?track) AS ?trackCount) WHERE {{
-            ?albumUri music:albumName ?albumName .
-            {{
-                {artist_ref} music:hasAlbum ?albumUri .
+            SELECT ?albumUri ?albumName ?year (COUNT(DISTINCT ?track) AS ?trackCount) WHERE {{
+                ?albumUri music:albumName ?albumName .
+                {{ {artist_ref} music:hasAlbum ?albumUri . }}
+                UNION
+                {{ ?track music:performedBy {artist_ref} ; music:inAlbum ?albumUri . }}
+                OPTIONAL {{ ?albumUri music:releaseYear ?year }}
+                OPTIONAL {{ ?track music:inAlbum ?albumUri }}
             }}
-            UNION
-            {{
-                ?track music:performedBy {artist_ref} ;
-                       music:inAlbum ?albumUri .
-            }}
-            OPTIONAL {{ ?albumUri music:releaseYear ?year }}
-            OPTIONAL {{ ?track music:inAlbum ?albumUri }}
-        }}
-        GROUP BY ?albumUri ?albumName ?year
-        ORDER BY DESC(?year)
-    """
+            GROUP BY ?albumUri ?albumName ?year
+            ORDER BY DESC(?year)
+        """
 
     albums = [
         {
@@ -151,24 +158,18 @@ def get_artist_detail(artist: str) -> Optional[Dict]:
         } for r in store.execute_sparql(album_q)
     ]
 
-    # Similar artists inference
     similar_q = _PREFIXES + f"""
-    SELECT ?simUri ?simName (COUNT(DISTINCT ?track2) AS ?overlapCount)
-    WHERE {{
-        ?track1 music:performedBy {artist_ref} ;
-                music:inGenre ?sharedGenre .
-
-        ?track2 music:inGenre ?sharedGenre ;
-                music:performedBy ?simUri .
-        
-        ?simUri music:artistName ?simName .
-
-        FILTER(?simUri != {artist_ref})
-    }} 
-    GROUP BY ?simUri ?simName
-    ORDER BY DESC(?overlapCount)
-    LIMIT 10
-    """
+        SELECT ?simUri ?simName (COUNT(DISTINCT ?track2) AS ?overlapCount)
+        WHERE {{
+            ?track1 music:performedBy {artist_ref} ; music:inGenre ?sharedGenre .
+            ?track2 music:inGenre ?sharedGenre ; music:performedBy ?simUri .
+            ?simUri music:artistName ?simName .
+            FILTER(?simUri != {artist_ref})
+        }} 
+        GROUP BY ?simUri ?simName
+        ORDER BY DESC(?overlapCount)
+        LIMIT 10
+        """
 
     similar = [
         {"uri": str(r["simUri"]), "slug": _slug(str(r["simUri"])), "name": str(r["simName"])}
@@ -176,12 +177,16 @@ def get_artist_detail(artist: str) -> Optional[Dict]:
     ]
 
     return {
-        "uri":             artist_ref.strip("<>"),
-        "slug":            artist_slug,
-        "name":            name,
-        "genres":          list(genres_set),
-        "top_tracks":      top_tracks,
-        "albums":          albums,
+        "uri": artist_ref.strip("<>"),
+        "slug": artist_slug,
+        "name": name,
+        "abstract": abstract,  # Vindo da DBpedia
+        "image_url": image_url,  # Vindo da Wikidata
+        "hometown": hometown,  # Vindo da Wikidata
+        "is_trending": is_trending,  # Vindo das regras SPIN
+        "genres": list(genres_set),
+        "top_tracks": top_tracks,
+        "albums": albums,
         "similar_artists": similar,
     }
 
@@ -223,44 +228,38 @@ def get_tracks(search=None, limit=50, offset=0) -> List[Dict]:
 def get_album_detail(album_slug: str) -> Optional[Dict]:
     """Retrieves comprehensive album data, ordering tracks by their track number."""
     safe_slug = quote(album_slug, safe="")
-    album_ref = f"<http://musickg.org/album/{safe_slug}>"
+    # Usamos o namespace correto music: definido no seu rdf_store.py
+    album_ref = f"<http://musickg.org/data/album/{safe_slug}>"
 
     info_q = _PREFIXES + f"""
-        SELECT ?name ?year ?artistUri ?artistName WHERE {{
-            {album_ref} music:albumName ?name .
+        SELECT ?albumName ?year ?artistName ?artistUri WHERE {{
+            {album_ref} music:albumName ?albumName .
             OPTIONAL {{ {album_ref} music:releaseYear ?year . }}
             OPTIONAL {{
-                {{ ?artistUri music:hasAlbum {album_ref} . }}
-                UNION
-                {{ ?track music:inAlbum {album_ref} ; music:performedBy ?artistUri . }}
-                ?artistUri music:artistName ?artistName .
+                ?artistUri music:hasAlbum {album_ref} ;
+                           music:artistName ?artistName .
             }}
         }} LIMIT 1
         """
     info = store.execute_sparql(info_q)
-    if not info:
-        return None
+    if not info: return None
 
     r0 = info[0]
-    artist_uri = r0.get("artistUri", "")
+    artist_uri = r0.get("artistUri")
 
+    # Query com a nova ontologia: ligações music:hasTrack
     tracks_q = _PREFIXES + f"""
-        SELECT ?trackUri ?trackName ?trackNumber
-                (GROUP_CONCAT(DISTINCT ?rawLabel; SEPARATOR="|") AS ?genres) 
-                (SAMPLE(?energy) AS ?trackEnergy)
-        WHERE {{
-            ?trackUri music:inAlbum {album_ref} ;
-                      music:trackName ?trackName .
+        SELECT ?trackUri ?trackName ?pop ?dur ?e ?d ?v WHERE {{
+            {album_ref} music:hasTrack ?trackUri . 
+            ?trackUri music:trackName ?trackName .
+            OPTIONAL {{ ?trackUri music:popularity ?pop }}
+            OPTIONAL {{ ?trackUri music:durationMs ?dur }}
             OPTIONAL {{
-                ?trackUri music:inGenre ?g .
-                OPTIONAL {{ ?g music:label ?lbl . }}
-                BIND(COALESCE(?lbl, REPLACE(STR(?g), "^.*/", "")) AS ?rawLabel)
+                ?trackUri music:hasAudioFeatures ?af .
+                ?af music:energy ?e ; music:danceability ?d ; music:valence ?v .
             }}
-            OPTIONAL {{ ?trackUri music:energy ?energy . }}
-            OPTIONAL {{ ?trackUri music:trackNumber ?trackNumber . }}
         }}
-        GROUP BY ?trackUri ?trackName ?trackNumber
-        ORDER BY (IF(BOUND(?trackNumber), ?trackNumber, 999)) ?trackName
+        ORDER BY ?trackName
     """
 
     tracks = []
