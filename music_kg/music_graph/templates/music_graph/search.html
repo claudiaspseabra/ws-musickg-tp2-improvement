@@ -1,0 +1,103 @@
+{% extends 'music_graph/base.html' %}
+
+{% block title %}Search - MusicKG{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-6 py-10">
+
+    <h1 class="text-4xl font-extrabold text-text-primary mb-8">Explore the Graph</h1>
+
+    <!-- Search Form -->
+    <form action="{% url 'search' %}" method="GET" class="flex flex-col md:flex-row gap-3 w-full mb-12">
+
+        <input type="text" name="q" value="{{ query }}" placeholder="Search artists, albums, or tracks..."
+               class="flex-grow bg-bg-card border border-border-col rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent text-lg">
+
+        <select name="type" class="bg-bg-card border border-border-col rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent font-semibold cursor-pointer">
+            <option value="all" {% if current_type == 'all' %}selected{% endif %}>All</option>
+            <option value="artist" {% if current_type == 'artist' %}selected{% endif %}>Artists</option>
+            <option value="album" {% if current_type == 'album' %}selected{% endif %}>Albums</option>
+            <option value="track" {% if current_type == 'track' %}selected{% endif %}>Tracks</option>
+        </select>
+
+        <button type="submit" class="bg-accent text-black font-bold px-8 py-3 rounded-lg hover:bg-accent-hover transition-colors text-lg">
+            Search
+        </button>
+    </form>
+
+
+    {% if query %}
+        <!-- Results Header -->
+        <div class="mb-6 flex justify-between items-center border-b border-border-col pb-4">
+            <h2 class="text-xl font-bold text-text-primary">
+                Results for "<span class="text-accent">{{ query }}</span>"
+            </h2>
+            <span class="text-sm text-text-muted bg-bg-card px-3 py-1 rounded-full border border-border-col">
+                {{ total_count }} found
+            </span>
+        </div>
+
+        <!-- Results List -->
+        <div class="flex flex-col gap-4">
+            {% for item in results %}
+
+                <a href="/{% if item.type == 'artist' %}artist{% else %}album{% endif %}/{{ item.slug }}"
+                   class="flex items-center gap-4 p-4 bg-bg-card rounded-xl border border-border-col hover:border-accent transition-colors group {% if item.type == 'track' %}cursor-default pointer-events-none{% endif %}">
+
+                    <div class="w-12 h-12 rounded-lg flex items-center justify-center text-xl bg-bg-secondary group-hover:bg-accent group-hover:text-black transition-colors">
+                        {% if item.type == 'artist' %}🎤
+                        {% elif item.type == 'album' %}💿
+                        {% else %}🎵{% endif %}
+                    </div>
+
+                    <div>
+                        <h3 class="font-bold text-lg text-text-primary group-hover:text-accent transition-colors">
+                            {{ item.name }}
+                        </h3>
+
+                        <span class="inline-block mt-1 text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm
+                            {% if item.type == 'artist' %}bg-blue-900/30 text-blue-400 border border-blue-800
+                            {% elif item.type == 'album' %}bg-purple-900/30 text-purple-400 border border-purple-800
+                            {% else %}bg-emerald-900/30 text-emerald-400 border border-emerald-800{% endif %}">
+                            {{ item.type }}
+                        </span>
+                    </div>
+                </a>
+
+            {% empty %}
+                <!-- Empty State -->
+                <div class="text-center py-16 bg-bg-card rounded-xl border border-border-col">
+                    <h3 class="text-xl font-bold text-text-primary mb-2">Nothing found.</h3>
+                    <p class="text-text-muted">We couldn't find results for your search. Try different keywords or adjust filters.</p>
+                </div>
+            {% endfor %}
+
+            <!-- Add Artist Prompt -->
+            {% if can_create_artist %}
+                <div class="mt-8 p-6 bg-bg-secondary rounded-xl border-2 border-dashed border-accent flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-1">Didn't find "{{ query }}"?</h3>
+                        <p class="text-sm text-text-muted">Our ASK query confirmed this artist doesn't exist in the Graph. Want to add them?</p>
+                        <p class="text-sm text-text-muted">Be sure to use proper capitalization.</p>
+                    </div>
+                    <form action="{% url 'create-artist' %}" method="POST" class="shrink-0">
+                        {% csrf_token %}
+                        <input type="hidden" name="artist_name" value="{{ query }}">
+                        <button type="submit" class="bg-accent text-black font-bold px-6 py-3 rounded-lg hover:bg-accent-hover transition-colors shadow-[0_0_15px_rgba(30,215,96,0.3)]">
+                            ✨ Add "{{ query }}"
+                        </button>
+                    </form>
+                </div>
+            {% endif %}
+        </div>
+
+    {% else %}
+        <!-- Initial State -->
+        <div class="text-center py-20 opacity-50">
+            <div class="text-6xl mb-6">🔍</div>
+            <p class="text-lg text-text-primary">Use the search bar above to query the Knowledge Graph.</p>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}
