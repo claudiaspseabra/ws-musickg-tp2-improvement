@@ -60,11 +60,55 @@ def build_spin_rules() -> Graph:
         WHERE {
             SELECT ?this WHERE {
                 ?this a music:Artist .
-                ?track music:performedBy ?this ;
+                ?this music:performedBy ?this ;
                        music:popularity ?pop .
             }
             GROUP BY ?this
             HAVING (AVG(xsd:float(?pop)) >= 75.0)
+        }
+        """
+    )
+
+    # Rule 3: Popular Track Classification
+    add_construct_rule(
+        graph,
+        MUSIC.Track,
+        MUSIC.ClassifyPopularTrackRule,
+        "Classify popular tracks",
+        """
+        PREFIX music: <http://musickg.org/data/>
+        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+        CONSTRUCT {
+            ?this a music:PopularTrack .
+        }
+        WHERE {
+            ?this music:popularity ?popularity .
+            FILTER (xsd:integer(?popularity) >= 70)
+        }
+        """
+    )
+
+    # Rule 4: Release Era Classification for Albums (Classic vs Modern)
+    add_construct_rule(
+        graph,
+        MUSIC.Album,
+        MUSIC.ClassifyReleaseEraRule,
+        "Classify release eras",
+        """
+        PREFIX music: <http://musickg.org/data/>
+        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+        CONSTRUCT {
+            ?this a music:ClassicAlbum . # O construtor base mapeia a assinatura da regra
+        }
+        WHERE {
+            ?this a music:Album ;
+                  music:releaseYear ?year .
+            BIND(xsd:integer(?year) AS ?releaseYear)
+            BIND(
+                IF(?releaseYear >= 2010, music:ModernAlbum,
+                  IF(?releaseYear < 2000, music:ClassicAlbum, music:TransitionAlbum)
+                ) AS ?albumClass
+            )
         }
         """
     )

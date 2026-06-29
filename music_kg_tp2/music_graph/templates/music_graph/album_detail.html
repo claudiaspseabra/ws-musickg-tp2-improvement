@@ -18,7 +18,19 @@
             💿
         </div>
         <div>
-            <h1 property="albumName" class="text-4xl font-extrabold text-text-primary mb-2">{{ album.name }}</h1>
+            <div class="flex items-center gap-3 mb-2">
+                <h1 property="albumName" class="text-4xl font-extrabold text-text-primary">
+                    {{ album.name }}
+                </h1>
+                {% if album.era == "Classic" %}
+                    <span class="text-xs bg-blue-800 text-white px-3 py-1 rounded-full font-bold uppercase tracking-wider shrink-0">Classic</span>
+                {% elif album.era == "Modern" %}
+                    <span class="text-xs bg-purple-600 text-white px-3 py-1 rounded-full font-bold uppercase tracking-wider shrink-0">Modern</span>
+                {% elif album.era == "Transition" %}
+                    <span class="text-xs bg-gray-600 text-white px-3 py-1 rounded-full font-bold uppercase tracking-wider shrink-0">Transition</span>
+                {% endif %}
+            </div>
+
             <p class="text-text-secondary text-lg">
                 By <a href="/artist/{{ album.artist_slug }}" class="text-accent hover:underline">{{ album.artist_name }}</a>
                 • <span property="releaseYear">{{ album.year }}</span> • {{ album.track_count }} tracks
@@ -97,13 +109,17 @@
         {% for track in album.tracks %}
         <div class="flex flex-col p-4 border-b border-border-col hover:bg-bg-hover transition-colors last:border-0 group">
             <div class="flex items-center justify-between">
-
                 <div class="flex items-center gap-4">
                     <div class="w-6 text-center text-text-muted font-mono text-lg font-bold">
                         {{ track.track_number|default:forloop.counter }}
                     </div>
                     <div>
-                        <p class="font-bold text-text-primary">{{ track.name }}</p>
+                        <p class="font-bold text-text-primary">
+                            {{ track.name }}
+                            {% if track.is_popular %}
+                                <span class="text-[10px] bg-yellow-500 text-black px-1.5 rounded font-bold">🌟 Hit</span>
+                            {% endif %}
+                        </p>
                         <p class="text-xs text-text-muted">{{ track.genre|title }} • Energy: {{ track.energy }} • Popularity: {{ track.popularity }}</p>
                     </div>
                 </div>

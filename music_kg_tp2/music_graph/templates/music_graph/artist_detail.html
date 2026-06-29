@@ -141,6 +141,9 @@
                                     {% if track.is_high_energy %}
                                         <span class="text-[10px] bg-red-600 text-white px-1.5 rounded">⚡ High Energy</span>
                                     {% endif %}
+                                    {% if track.is_popular %}
+                                        <span class="text-[10px] bg-yellow-500 text-black px-1.5 rounded font-bold">🌟 Hit</span>
+                                    {% endif %}
                                 </p>
                                 <p class="text-xs text-text-muted">{{ track.genre|title }} • Energy: {{ track.energy }} • Popularity: {{ track.popularity }}</p>
                             </div>
@@ -209,7 +212,14 @@
                     {% for album in artist.albums %}
                     <div class="p-4 bg-bg-card rounded-xl border border-border-col hover:border-accent transition-colors relative group">
                         <a href="/album/{{ album.slug }}" class="block">
-                            <h3 class="font-bold text-text-primary text-lg truncate">{{ album.name }}</h3>
+                            <h3 class="font-bold text-text-primary text-lg truncate">
+                                {{ album.name }}
+                                {% if album.era == "Classic" %}
+                                    <span class="text-[10px] bg-blue-800 text-white px-1.5 rounded">Classic</span>
+                                {% elif album.era == "Modern" %}
+                                    <span class="text-[10px] bg-purple-600 text-white px-1.5 rounded">Modern</span>
+                                {% endif %}
+                            </h3>
                             <p class="text-sm text-text-muted mt-1">Year: {{ album.year }}</p>
                             <p class="text-xs text-accent mt-2">{{ album.track_count }} track(s)</p>
                         </a>

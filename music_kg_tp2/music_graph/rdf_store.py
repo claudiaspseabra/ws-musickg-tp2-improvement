@@ -233,7 +233,37 @@ class _RDFStore:
         """
         success_trending = self.execute_sparql_update(trending_artist_rule)
 
-        if success_energy and success_trending:
+        # Regra 3: Popular Tracks (Hits)
+        popular_track_rule = """
+                PREFIX music: <http://musickg.org/data/>
+                PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+                INSERT { ?track a music:PopularTrack . }
+                WHERE {
+                    ?track music:popularity ?popularity .
+                    FILTER (xsd:integer(?popularity) >= 70)
+                }
+                """
+        success_popular = self.execute_sparql_update(popular_track_rule)
+
+        # Regra 4: Release Era para Álbuns (Classic, Transition, Modern)
+        era_album_rule = """
+                PREFIX music: <http://musickg.org/data/>
+                PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+                INSERT { ?this a ?albumClass . }
+                WHERE {
+                    ?this a music:Album ;
+                          music:releaseYear ?year .
+                    BIND(xsd:integer(?year) AS ?releaseYear)
+                    BIND(
+                        IF(?releaseYear >= 2010, music:ModernAlbum,
+                          IF(?releaseYear < 2000, music:ClassicAlbum, music:TransitionAlbum)
+                        ) AS ?albumClass
+                    )
+                }
+                """
+        success_era = self.execute_sparql_update(era_album_rule)
+
+        if success_energy and success_trending and success_popular and success_era:
             log.info("Inferência concluída! Novas triplas geradas com sucesso.")
             return True
         return False

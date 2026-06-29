@@ -3,9 +3,12 @@
 @prefix sp: <http://spinrdf.org/sp#> .
 @prefix spin: <http://spinrdf.org/spin#> .
 
+music:Album spin:rule music:ClassifyReleaseEraRule .
+
 music:Artist spin:rule music:ClassifyTrendingArtistRule .
 
-music:Track spin:rule music:ClassifyHighEnergyTrackRule .
+music:Track spin:rule music:ClassifyHighEnergyTrackRule,
+        music:ClassifyPopularTrackRule .
 
 music:ClassifyHighEnergyTrackRule a sp:Construct,
         spin:Rule ;
@@ -21,6 +24,38 @@ music:ClassifyHighEnergyTrackRule a sp:Construct,
             FILTER (xsd:float(?e) > 0.8)
         }""" .
 
+music:ClassifyPopularTrackRule a sp:Construct,
+        spin:Rule ;
+    rdfs:label "Classify popular tracks" ;
+    sp:text """PREFIX music: <http://musickg.org/data/>
+        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+        CONSTRUCT {
+            ?this a music:PopularTrack .
+        }
+        WHERE {
+            ?this music:popularity ?popularity .
+            FILTER (xsd:integer(?popularity) >= 70)
+        }""" .
+
+music:ClassifyReleaseEraRule a sp:Construct,
+        spin:Rule ;
+    rdfs:label "Classify release eras" ;
+    sp:text """PREFIX music: <http://musickg.org/data/>
+        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+        CONSTRUCT {
+            ?this a music:ClassicAlbum . # O construtor base mapeia a assinatura da regra
+        }
+        WHERE {
+            ?this a music:Album ;
+                  music:releaseYear ?year .
+            BIND(xsd:integer(?year) AS ?releaseYear)
+            BIND(
+                IF(?releaseYear >= 2000, music:ModernAlbum,
+                  IF(?releaseYear < 2000, music:ClassicAlbum, music:TransitionAlbum)
+                ) AS ?albumClass
+            )
+        }""" .
+
 music:ClassifyTrendingArtistRule a sp:Construct,
         spin:Rule ;
     rdfs:label "Classify Trending Artists based on track popularity average" ;
@@ -32,7 +67,7 @@ music:ClassifyTrendingArtistRule a sp:Construct,
         WHERE {
             SELECT ?this WHERE {
                 ?this a music:Artist .
-                ?track music:performedBy ?this ;
+                ?this music:performedBy ?this ;
                        music:popularity ?pop .
             }
             GROUP BY ?this

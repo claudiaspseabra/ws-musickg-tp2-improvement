@@ -102,21 +102,22 @@ def get_artist_detail(artist: str) -> Optional[Dict]:
 
     # Tracks, genres E INFERÊNCIAS SPIN (HighEnergyTrack)
     tracks_q = _PREFIXES + f"""
-                SELECT ?trackUri ?trackName ?isHighEnergy (GROUP_CONCAT(DISTINCT ?genreLabel; SEPARATOR=", ") AS ?genres) (SAMPLE(?energy) AS ?trackEnergy) (SAMPLE(?pop) AS ?trackPop)
-                WHERE {{
-                    ?trackUri music:performedBy {artist_ref} ;
-                              music:trackName ?trackName .
-                    OPTIONAL {{
-                        ?trackUri music:inGenre ?g .
-                        ?trackUri music:energy ?energy .
-                        ?g music:label ?genreLabel .
-                    }}
-                    OPTIONAL {{ ?trackUri music:popularity ?pop . }}
-                    OPTIONAL {{ ?trackUri a music:HighEnergyTrack . BIND(true AS ?isHighEnergy) }}
-                }}
-                GROUP BY ?trackUri ?trackName ?isHighEnergy
-                ORDER BY ?trackName
-                """
+        SELECT ?trackUri ?trackName ?isHighEnergy ?isPopular (GROUP_CONCAT(DISTINCT ?genreLabel; SEPARATOR=", ") AS ?genres) (SAMPLE(?energy) AS ?trackEnergy) (SAMPLE(?pop) AS ?trackPop)
+        WHERE {{
+            ?trackUri music:performedBy {artist_ref} ;
+                      music:trackName ?trackName .
+            OPTIONAL {{
+                ?trackUri music:inGenre ?g .
+                ?trackUri music:energy ?energy .
+                ?g music:label ?genreLabel .
+            }}
+            OPTIONAL {{ ?trackUri music:popularity ?pop . }}
+            OPTIONAL {{ ?trackUri a music:HighEnergyTrack . BIND(true AS ?isHighEnergy) }}
+            OPTIONAL {{ ?trackUri a music:PopularTrack . BIND(true AS ?isPopular) }}
+        }}
+        GROUP BY ?trackUri ?trackName ?isHighEnergy ?isPopular
+        ORDER BY ?trackName
+    """
 
     top_tracks = []
     genres_set = set()
@@ -135,28 +136,34 @@ def get_artist_detail(artist: str) -> Optional[Dict]:
             "genre": genre_str if genre_str else "No genre",
             "energy": str(r.get("trackEnergy", "0.5")),
             "popularity": _int(r.get("trackPop", 0)),
-            "is_high_energy": bool(r.get("isHighEnergy", False))
+            "is_high_energy": bool(r.get("isHighEnergy", False)),
+            "is_popular": bool(r.get("isPopular", False)),
         })
 
     # (O código para Albums e similar_artists mantém-se exatamente igual a partir daqui...)
     album_q = _PREFIXES + f"""
-            SELECT ?albumUri ?albumName ?year (COUNT(DISTINCT ?track) AS ?trackCount) WHERE {{
-                ?albumUri music:albumName ?albumName .
-                {{ {artist_ref} music:hasAlbum ?albumUri . }}
-                UNION
-                {{ ?track music:performedBy {artist_ref} ; music:inAlbum ?albumUri . }}
-                OPTIONAL {{ ?albumUri music:releaseYear ?year }}
-                OPTIONAL {{ ?track music:inAlbum ?albumUri }}
+        SELECT ?albumUri ?albumName ?year ?eraClass (COUNT(DISTINCT ?track) AS ?trackCount) WHERE {{
+            ?albumUri music:albumName ?albumName .
+            {{ {artist_ref} music:hasAlbum ?albumUri . }}
+            UNION
+            {{ ?track music:performedBy {artist_ref} ; music:inAlbum ?albumUri . }}
+            OPTIONAL {{ ?albumUri music:releaseYear ?year }}
+            OPTIONAL {{ ?track music:inAlbum ?albumUri }}
+            OPTIONAL {{ 
+                ?albumUri a ?eraClass . 
+                FILTER(?eraClass IN (music:ClassicAlbum, music:ModernAlbum, music:TransitionAlbum)) 
             }}
-            GROUP BY ?albumUri ?albumName ?year
-            ORDER BY DESC(?year)
-        """
+        }}
+        GROUP BY ?albumUri ?albumName ?year ?eraClass
+        ORDER BY DESC(?year)
+    """
 
     albums = [
         {
             "uri": str(r["albumUri"]), "slug": _slug(str(r["albumUri"])),
             "name": str(r["albumName"]), "year": r.get("year", "Unknown"),
             "track_count": r.get("trackCount", 0),
+            "era": str(r.get("eraClass", "")).split("/")[-1].replace("Album", "") if r.get("eraClass") else ""
         } for r in store.execute_sparql(album_q)
     ]
 
@@ -233,39 +240,51 @@ def get_album_detail(album_slug: str) -> Optional[Dict]:
     album_ref = f"<http://musickg.org/album/{safe_slug}>"
 
     info_q = _PREFIXES + f"""
-        SELECT ?albumName ?year ?artistName ?artistUri (REPLACE(STR(?artistUri), "^.*[/#]", "") AS ?artistSlug)
+        SELECT ?albumName ?year ?artistName ?artistUri ?eraClass (REPLACE(STR(?artistUri), "^.*[/#]", "") AS ?artistSlug)
         WHERE {{
             {album_ref} music:albumName ?albumName .
             OPTIONAL {{ {album_ref} music:releaseYear ?year . }}
-            
             OPTIONAL {{
-                {{ ?artistUri music:hasAlbum {album_ref} . }}
-                UNION
-                {{ ?track music:inAlbum {album_ref} ; music:performedBy ?artistUri . }}
-                
+                {album_ref} a ?eraClass .
+                FILTER(?eraClass IN (music:ClassicAlbum, music:ModernAlbum, music:TransitionAlbum))
+            }}
+            OPTIONAL {{
+                {album_ref} (^music:hasAlbum | ^music:inAlbum/music:performedBy) ?artistUri .
                 ?artistUri music:artistName ?artistName .
             }}
         }} LIMIT 1
-        """
+    """
     info = store.execute_sparql(info_q)
     if not info: return None
 
     r0 = info[0]
     artist_uri = r0.get("artistUri")
     artist_slug = r0.get("artistSlug")
+    album_era = str(r0.get("eraClass", "")).split("/")[-1].replace("Album", "") if r0.get("eraClass") else ""
 
     tracks_q = _PREFIXES + f"""
-        SELECT ?trackUri ?trackName ?pop ?dur ?e ?d ?v WHERE {{
-            {album_ref} music:hasTrack ?trackUri . 
-            ?trackUri music:trackName ?trackName .
-            OPTIONAL {{ ?trackUri music:popularity ?pop }}
-            OPTIONAL {{ ?trackUri music:durationMs ?dur }}
+        SELECT ?trackUri ?trackName ?isHighEnergy ?isPopular
+               (GROUP_CONCAT(DISTINCT ?genreLabel; SEPARATOR=", ") AS ?genres) 
+               (SAMPLE(?e) AS ?trackEnergy) 
+               (SAMPLE(?pop) AS ?trackPop)
+               (SAMPLE(?trackNum) AS ?trackNumber)
+        WHERE {{
+            ?trackUri music:inAlbum {album_ref} ; 
+                      music:trackName ?trackName .
+
             OPTIONAL {{
-                ?trackUri music:hasAudioFeatures ?af .
-                ?af music:energy ?e ; music:danceability ?d ; music:valence ?v .
+                ?trackUri music:inGenre ?g .
+                ?g music:label ?genreLabel .
             }}
+            OPTIONAL {{ ?trackUri music:energy ?e . }}
+            OPTIONAL {{ ?trackUri music:popularity ?pop . }}
+            OPTIONAL {{ ?trackUri music:trackNumber ?trackNum . }}
+
+            OPTIONAL {{ ?trackUri a music:HighEnergyTrack . BIND(true AS ?isHighEnergy) }}
+            OPTIONAL {{ ?trackUri a music:PopularTrack . BIND(true AS ?isPopular) }}
         }}
-        ORDER BY ?trackName
+        GROUP BY ?trackUri ?trackName ?isHighEnergy ?isPopular
+        ORDER BY ?trackNumber ?trackName
     """
 
     tracks = []
@@ -284,8 +303,10 @@ def get_album_detail(album_slug: str) -> Optional[Dict]:
             "name": str(r["trackName"]),
             "genre": ", ".join(sorted(list(set(track_genres)))) if track_genres else "No genre",
             "energy": str(r.get("trackEnergy", "0.5")),
-            "popularity": _int(r.get("pop", 0)),
-            "track_number": str(r.get("trackNumber", ""))
+            "popularity": _int(r.get("trackPop", 0)),
+            "track_number": str(r.get("trackNumber", "")),
+            "is_high_energy": bool(r.get("isHighEnergy", False)),
+            "is_popular": bool(r.get("isPopular", False)),
         })
 
     other_tracks = []
@@ -307,6 +328,7 @@ def get_album_detail(album_slug: str) -> Optional[Dict]:
         "year": str(r0.get("year", "Unknown")),
         "artist_name": str(r0.get("artistName", "Various Artists")),
         "artist_slug": artist_slug if artist_slug else "",
+        "era": album_era,
         "tracks": tracks,
         "other_tracks": other_tracks,
         "track_count": len(tracks)
@@ -693,7 +715,8 @@ def get_track_vibe_recommendations(track_slug: str) -> Optional[dict]:
     t_uri = f"<http://musickg.org/track/{safe_slug}>"
 
     info_q = _PREFIXES + f"""
-    SELECT ?name ?energy ?genreLabel ?artistName ?artistSlug WHERE {{
+    SELECT ?name ?energy ?genreLabel ?artistName ?artistSlug 
+    WHERE {{
         {t_uri} music:trackName ?name ;
                 music:energy ?energy ;
                 music:performedBy ?a_uri ;
