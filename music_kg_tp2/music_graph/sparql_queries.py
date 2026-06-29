@@ -102,7 +102,7 @@ def get_artist_detail(artist: str) -> Optional[Dict]:
 
     # Tracks, genres E INFERÊNCIAS SPIN (HighEnergyTrack)
     tracks_q = _PREFIXES + f"""
-                SELECT ?trackUri ?trackName ?isHighEnergy (GROUP_CONCAT(DISTINCT ?genreLabel; SEPARATOR=", ") AS ?genres) (SAMPLE(?energy) AS ?trackEnergy)
+                SELECT ?trackUri ?trackName ?isHighEnergy (GROUP_CONCAT(DISTINCT ?genreLabel; SEPARATOR=", ") AS ?genres) (SAMPLE(?energy) AS ?trackEnergy) (SAMPLE(?pop) AS ?trackPop)
                 WHERE {{
                     ?trackUri music:performedBy {artist_ref} ;
                               music:trackName ?trackName .
@@ -111,6 +111,7 @@ def get_artist_detail(artist: str) -> Optional[Dict]:
                         ?trackUri music:energy ?energy .
                         ?g music:label ?genreLabel .
                     }}
+                    OPTIONAL {{ ?trackUri music:popularity ?pop . }}
                     OPTIONAL {{ ?trackUri a music:HighEnergyTrack . BIND(true AS ?isHighEnergy) }}
                 }}
                 GROUP BY ?trackUri ?trackName ?isHighEnergy
@@ -133,7 +134,8 @@ def get_artist_detail(artist: str) -> Optional[Dict]:
             "name": str(r["trackName"]),
             "genre": genre_str if genre_str else "No genre",
             "energy": str(r.get("trackEnergy", "0.5")),
-            "is_high_energy": bool(r.get("isHighEnergy", False))  # Passado para o frontend!
+            "popularity": _int(r.get("trackPop", 0)),
+            "is_high_energy": bool(r.get("isHighEnergy", False))
         })
 
     # (O código para Albums e similar_artists mantém-se exatamente igual a partir daqui...)
@@ -228,16 +230,20 @@ def get_tracks(search=None, limit=50, offset=0) -> List[Dict]:
 def get_album_detail(album_slug: str) -> Optional[Dict]:
     """Retrieves comprehensive album data, ordering tracks by their track number."""
     safe_slug = quote(album_slug, safe="")
-    # Usamos o namespace correto music: definido no seu rdf_store.py
-    album_ref = f"<http://musickg.org/data/album/{safe_slug}>"
+    album_ref = f"<http://musickg.org/album/{safe_slug}>"
 
     info_q = _PREFIXES + f"""
-        SELECT ?albumName ?year ?artistName ?artistUri WHERE {{
+        SELECT ?albumName ?year ?artistName ?artistUri (REPLACE(STR(?artistUri), "^.*[/#]", "") AS ?artistSlug)
+        WHERE {{
             {album_ref} music:albumName ?albumName .
             OPTIONAL {{ {album_ref} music:releaseYear ?year . }}
+            
             OPTIONAL {{
-                ?artistUri music:hasAlbum {album_ref} ;
-                           music:artistName ?artistName .
+                {{ ?artistUri music:hasAlbum {album_ref} . }}
+                UNION
+                {{ ?track music:inAlbum {album_ref} ; music:performedBy ?artistUri . }}
+                
+                ?artistUri music:artistName ?artistName .
             }}
         }} LIMIT 1
         """
@@ -246,8 +252,8 @@ def get_album_detail(album_slug: str) -> Optional[Dict]:
 
     r0 = info[0]
     artist_uri = r0.get("artistUri")
+    artist_slug = r0.get("artistSlug")
 
-    # Query com a nova ontologia: ligações music:hasTrack
     tracks_q = _PREFIXES + f"""
         SELECT ?trackUri ?trackName ?pop ?dur ?e ?d ?v WHERE {{
             {album_ref} music:hasTrack ?trackUri . 
@@ -278,6 +284,7 @@ def get_album_detail(album_slug: str) -> Optional[Dict]:
             "name": str(r["trackName"]),
             "genre": ", ".join(sorted(list(set(track_genres)))) if track_genres else "No genre",
             "energy": str(r.get("trackEnergy", "0.5")),
+            "popularity": _int(r.get("pop", 0)),
             "track_number": str(r.get("trackNumber", ""))
         })
 
@@ -296,10 +303,10 @@ def get_album_detail(album_slug: str) -> Optional[Dict]:
     return {
         "uri": album_ref.strip("<>"),
         "slug": album_slug,
-        "name": str(r0["name"]),
+        "name": str(r0.get("albumName", "Unknown Album")),
         "year": str(r0.get("year", "Unknown")),
         "artist_name": str(r0.get("artistName", "Various Artists")),
-        "artist_slug": _slug(artist_uri) if artist_uri else "",
+        "artist_slug": artist_slug if artist_slug else "",
         "tracks": tracks,
         "other_tracks": other_tracks,
         "track_count": len(tracks)
@@ -370,7 +377,7 @@ def delete_artist(artist_slug: str) -> bool:
     """
     return store.execute_sparql_update(query)
 
-def add_new_track(artist_slug: str, track_name: str, genre_name: str, energy: float, album_slug: str = None) -> bool:
+def add_new_track(artist_slug: str, track_name: str, genre_name: str, energy: float, popularity: int, album_slug: str = None) -> bool:
     """Inserts a new track. Optionally links it to an album."""
     t_id = str(uuid.uuid4())[:8]
     t_uri = f"<http://musickg.org/track/{t_id}>"
@@ -391,7 +398,8 @@ def add_new_track(artist_slug: str, track_name: str, genre_name: str, energy: fl
         {t_uri} music:trackName "{safe_track_name}" ;
                 music:performedBy {a_uri} ;
                 music:inGenre {g_uri} ;
-                music:energy "{energy}"^^xsd:float .
+                music:energy "{energy}"^^xsd:float ;
+                music:popularity "{popularity}"^^xsd:integer .
         {album_triple}
         {g_uri} music:label "{genre_name}" .
     }}
@@ -399,8 +407,9 @@ def add_new_track(artist_slug: str, track_name: str, genre_name: str, energy: fl
     return store.execute_sparql_update(query)
 
 
-def update_track(track_slug: str, track_name: str, genre_name: str, energy: float, track_number: str = "") -> bool:
+def update_track(track_slug: str, track_name: str, genre_name: str, popularity: int, energy: float, track_number: str = "") -> bool:
     """Updates the name, genre, energy and track number of an existing track bulletproofly."""
+    safe_track_name = track_name.replace('"', '\\"')
     safe_slug = quote(track_slug, safe="")
     t_uri = f"<http://musickg.org/track/{safe_slug}>"
 
@@ -409,6 +418,7 @@ def update_track(track_slug: str, track_name: str, genre_name: str, energy: floa
             {t_uri} music:trackName ?oldName .
             {t_uri} music:inGenre ?oldGenre .
             {t_uri} music:energy ?oldEnergy .
+            {t_uri} music:popularity ?oldPop .
             {t_uri} music:trackNumber ?oldNum .
         }}
         WHERE {{
@@ -417,6 +427,8 @@ def update_track(track_slug: str, track_name: str, genre_name: str, energy: floa
             {{ {t_uri} music:inGenre ?oldGenre . }}
             UNION
             {{ {t_uri} music:energy ?oldEnergy . }}
+            UNION
+            {{ {t_uri} music:trackNumber ?oldNum . }}
             UNION
             {{ {t_uri} music:trackNumber ?oldNum . }}
         }}
@@ -442,7 +454,8 @@ def update_track(track_slug: str, track_name: str, genre_name: str, energy: floa
     insert_query = _PREFIXES + f"""
         INSERT DATA {{
             {t_uri} music:trackName "{track_name}" ;
-                    music:energy "{energy}"^^xsd:float .
+                    music:energy "{energy}"^^xsd:float ;
+                    music:popularity "{popularity}"^^xsd:integer .
             {insert_genre_triples}
             {track_num_triple}
         }}

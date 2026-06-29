@@ -134,6 +134,7 @@ def add_track_view(request, slug):
         track_name = request.POST.get("track_name")
         genre_name = request.POST.get("genre_name")
         energy = request.POST.get("energy", 0.5)
+        popularity = request.POST.get("popularity", 50)
         album_slug = request.POST.get("album_slug")
 
 
@@ -155,9 +156,10 @@ def edit_track_view(request, slug):
         track_name = request.POST.get("track_name")
         genre_name = request.POST.get("genre_name")
         energy = request.POST.get("energy")
+        popularity = request.POST.get("popularity", 50)
         track_number = request.POST.get("track_number")
 
-        if sq.update_track(slug, track_name, genre_name, float(energy), track_number):
+        if sq.update_track(slug, track_name, genre_name, float(energy), int(popularity), track_number):
             messages.success(request, f"Track '{track_name}' updated!")
         else:
             messages.error(request, "Error updating the track.")
@@ -196,6 +198,7 @@ def delete_track_view(request, slug):
         if artist_slug:
             return redirect('artist-detail', slug=artist_slug)
     return redirect('home')
+
 
 def album_detail(request, slug):
     """Detailed view for a specific album node."""
