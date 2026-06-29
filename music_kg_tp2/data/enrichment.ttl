@@ -2,206 +2,252 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 
 <http://musickg.org/artist/Apache_207> music:dbpediaAbstract "Volkan Yaman (born 23 October 1997), known professionally as <B>Apache</B> <B>207</B>, is a German rapper of"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Apache_207_-_2022238204345_2022-08-26_Apache_207_-_Sven_-_1D_X_MK_II_-_0587_-_B70I7584.jpg?width=300> ;
+    music:hometown "Germany" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Apache%20207%20-%202022238203449%202022-08-26%20Apache%20207%20-%20Sven%20-%201D%20X%20MK%20II%20-%200423%20-%20B70I7420%20%28cropped%29.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q66725900> .
 
 <http://musickg.org/artist/Ariel_Ram%C3%ADrez> music:dbpediaAbstract "<B>Ariel</B> <B>Ramírez</B> (4 September 1921 – 18 February 2010) was an Argentine composer, pianist and music"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Ariel_Ramírez_retrato_03.jpg?width=300> ;
+    music:hometown "Argentina" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Ariel%20Ram%C3%ADrez%20retrato%2003.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q356552> .
 
-<http://musickg.org/artist/Ben_B%C3%B6hmer> music:dbpediaAbstract "<B>Ben</B> <B>Böhmer</B> is a German composer, producer and DJ from Göttingen, Germany. He primarily produces and"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/BenBöhmer7444_(1).jpg?width=300> ;
+<http://musickg.org/artist/Ben_B%C3%B6hmer> music:dbpediaAbstract "<B>Ben</B> <B>Böhmer</B> is a German composer, producer and DJ from Göttingen, Germany."@en ;
+    music:hometown "Germany" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/BenB%C3%B6hmer7444%20%281%29.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q52160540> .
 
-<http://musickg.org/artist/Ben_Yoo_Suk> music:dbpediaAbstract " citations for this number range. More details on the dynamical classification of minor planets can <B>be</B> found on the main page."@en ;
+<http://musickg.org/artist/Ben_Yoo_Suk> music:dbpediaAbstract " citations for this number range."@en ;
     music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/OOjs_UI_icon_table-merge-cells.svg?width=300> ;
     owl:sameAs <http://www.wikidata.org/entity/Q8458116> .
 
 <http://musickg.org/artist/Bertholet> music:dbpediaAbstract "<B>Bertholet</B> Flemalle, Flemal, or Flamael (1614–1675) was a Liège Baroque painter."@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Bertholet_flemal.jpg?width=300> ;
+    music:hometown "Prince-Bishopric of Liège" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Bertholet%20Fl%C3%A9mal%20-%20Autoportrait%20%28huile%20sur%20toile%2C%201663%2C%2063%20x%2051%20cm%2C%20La%20Boverie%29.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q323581> .
 
 <http://musickg.org/artist/Beyonc%C3%A9> music:dbpediaAbstract "<B>Beyoncé</B> Giselle Knowles-Carter ( bee-YON-say; born September 4, 1981) is an American singer"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Beyoncé_-_Tottenham_Hotspur_Stadium_-_1st_June_2023_(10_of_118)_(52946364598)_(best_crop).jpg?width=300> ;
+    music:hometown "United States" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Beyonc%C3%A9%20-%20Tottenham%20Hotspur%20Stadium%20-%201st%20June%202023%20%2810%20of%20118%29%20%2852946364598%29%20%28best%20crop%29.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q36153> .
 
 <http://musickg.org/artist/C-BooL> music:dbpediaAbstract " with rigid protective <B>covers</B> (typically of binder's board or heavy paperboard <B>covered</B> with buckram or"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Theodor_Fontane_Der_Stechlin.jpg?width=300> ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Latin%20dictionary.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q193955> .
 
-<http://musickg.org/artist/Cade_Thompson> music:dbpediaAbstract " premiered on July 11, 2013. Agents Nick Popovich (first three episodes), Ken <B>Cage</B>, ,  and Danny <B>Thompson</B>"@en ;
+<http://musickg.org/artist/Cade_Thompson> music:dbpediaAbstract " premiered on July 11, 2013."@en ;
+    music:hometown "United States" ;
     music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Airplane_Repo.png?width=300> ;
     owl:sameAs <http://www.wikidata.org/entity/Q16002226> .
 
 <http://musickg.org/artist/Camilo_S%C3%A9ptimo> music:dbpediaAbstract " are Julio Iglesias, José Luis Rodriguez, Luis Miguel, <B>Camilo</B> Sesto, Emmanuel, Nino Bravo, Roberto"@en ;
+    music:hometown "Latin America" ;
     owl:sameAs <http://www.wikidata.org/entity/Q6496560> .
 
-<http://musickg.org/artist/Carter> music:dbpediaAbstract "James Earl <B>Carter</B> Jr. (born October 1, 1924) is an American politician, philanthropist, and former"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Jimmy_Carter_Official_Portrait2_(3x4_cropped).jpg?width=300> ;
+<http://musickg.org/artist/Carter> music:dbpediaAbstract "James Earl <B>Carter</B> Jr."@en ;
+    music:hometown "United States" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/JimmyCarterPortrait2.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q23685> .
 
 <http://musickg.org/artist/Chino_%26_Nacho> music:dbpediaAbstract "<B>China</B> (Chinese: 中国; pinyin: Zhōngguó), officially the People's Republic of <B>China</B> (PRC), is a"@en ;
     music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_the_People's_Republic_of_China.svg?width=300> ;
     owl:sameAs <http://www.wikidata.org/entity/Q12205470> .
 
-<http://musickg.org/artist/Conejo> music:dbpediaAbstract "Benito Antonio Martínez Ocasio (born March 10, 1994), known by his stage name Bad Bunny, is an American Latin trap and reggaeton singer from Puerto Rico. He is considered one of the pioneers of latin trap music. His music is often defined as Latin trap and reggaeton, but he has incorporated various other genres into his music, including rock, bachata, and soul. He is noted for his deep, slurred vocal style and his eclectic fashion sense. He has frequently collaborated with artists such as J Balvin, Ozuna, Farruko, Residente, Arcángel, and Daddy Yankee."@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Bad_Bunny_2019_by_Glenn_Francis_(cropped).jpg?width=300> ;
+<http://musickg.org/artist/Conejo> music:dbpediaAbstract "Benito Antonio Martínez Ocasio (born March 10, 1994), known by his stage name Bad Bunny, is an American Latin trap and reggaeton singer from Puerto Rico."@en ;
+    music:hometown "Puerto Rico" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Bad%20Bunny%202019%20by%20Glenn%20Francis%20%28cropped%29.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q44333953> .
 
 <http://musickg.org/artist/Curtis_Lowe> music:dbpediaAbstract "\"The Ballad of <B>Curtis</B> <B>Loew</B>\" is a song written by Allen Collins and Ronnie Van Zant and recorded by"@en ;
+    music:hometown "United States" ;
     music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Sunrisefoodstore.jpg?width=300> ;
     owl:sameAs <http://www.wikidata.org/entity/Q7715411> .
 
 <http://musickg.org/artist/DVN> music:dbpediaAbstract "<B>DVD</B> (an abbreviation of digital versatile disc) is a digital optical disc storage format invented"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/DVD_logo.svg?width=300> ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/DVD-Video%20bottom-side.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q5294> .
 
-<http://musickg.org/artist/Danntik> music:dbpediaAbstract "Danielle Jane Minogue (born 20 October 1971) is an Australian singer, songwriter, actress, model and media personality. She rose to prominence in the early 1980s for her roles in the Australian television talent show Young Talent Time and the soap opera Home and Away, before beginning her career as a pop singer in the early 1990s. Minogue achieved early success with hits such as \"Love and Kisses\", \"This Is It\", \"Jump to the Beat\" and \"Baby Love\", though by the release of her second album, her popularity as a singer had declined, leading her to make a name for herself with award-winning performances in musicals Grease, Notre Dame De Paris and other acting credits The Vagina Monologues and Lady Macbeth. The late 1990s saw a brief return to music after Minogue reinvented herself as a dance ar"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Dannii_Minogue_arrives_at_the_58th_Annual_Logie_Awards_at_Crown_Palladium_(26904220225)_cropped.jpg?width=300> ;
+<http://musickg.org/artist/Danelly_Elly> music:dbpediaAbstract ""@en ;
+    owl:sameAs <http://www.wikidata.org/entity/Q18040452> .
+
+<http://musickg.org/artist/Danntik> music:dbpediaAbstract "Danielle Jane Minogue (born 20 October 1971) is an Australian singer, songwriter, actress, model and media personality."@en ;
+    music:hometown "Australia" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Dannii%20Minogue%20arrives%20at%20the%2058th%20Annual%20Logie%20Awards%20at%20Crown%20Palladium%20%2826904220225%29%20cropped%20%28cropped%29.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q188461> .
 
 <http://musickg.org/artist/Daya> music:dbpediaAbstract "Grace Martine Tandon (born October 24, 1998), professionally known as <B>Daya</B> (stylized DΛYΛ"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Daya_2016.jpg?width=300> ;
+    music:hometown "United States" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Daya%2012%2002%202016%20-14%20%2831029591063%29.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q21005558> .
 
-<http://musickg.org/artist/Dayseeker> music:dbpediaAbstract "<B>Dayseeker</B> is an American post-hardcore band from Orange County, California. The band is currently"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Dayseeker_Concert_Photo.jpg?width=300> ;
+<http://musickg.org/artist/Dayseeker> music:dbpediaAbstract "<B>Dayseeker</B> is an American post-hardcore band from Orange County, California."@en ;
+    music:hometown "United States" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Dayseeker%20Concert%20Photo.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q19277905> .
 
-<http://musickg.org/artist/Depeche_Mode> music:dbpediaAbstract "<B>Depeche</B> <B>Mode</B> () are an English electronic music band formed in Basildon, Essex in 1980. The group"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Depeche_mode_in_portland_Nov_2023.jpg?width=300> ;
+<http://musickg.org/artist/Depeche_Mode> music:dbpediaAbstract "<B>Depeche</B> <B>Mode</B> () are an English electronic music band formed in Basildon, Essex in 1980."@en ;
+    music:hometown "United Kingdom" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Depeche%20mode%20in%20portland%20Nov%202023.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q482964> .
 
 <http://musickg.org/artist/Derian> music:dbpediaAbstract "Patricia Murphy (\"Patt\") <B>Derian</B> (August 12, 1929 – May 20, 2016) was an American civil rights and"@en ;
+    music:hometown "United States" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Patricia%20Derian%20-%20NARA%20-%20175198%20%28cropped%29.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q7145705> .
 
-<http://musickg.org/artist/Dimatik> music:dbpediaAbstract "Landry Nany <B>Dimata</B> (born 1 September 1997) is a Belgian footballer who plays for Anderlecht. He plays as a central striker."@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Landry_Dimata.jpg?width=300> ;
+<http://musickg.org/artist/Dimatik> music:dbpediaAbstract "Landry Nany <B>Dimata</B> (born 1 September 1997) is a Belgian footballer who plays for Anderlecht."@en ;
+    music:hometown "Democratic Republic of the Congo" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Landry%20Dimata.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q26212069> .
 
 <http://musickg.org/artist/DubVision> music:dbpediaAbstract "<B>DubVision</B> is a Dutch DJ duo consisting of brothers Victor Leicher (born 1989) and Stephan Leicher"@en ;
+    music:hometown "Netherlands" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/DubVision%20%40%20Surf%20Worldcup%20Podersdorf%202013.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q17629510> .
 
-<http://musickg.org/artist/Dust_of_Apollon> music:dbpediaAbstract "The United States <B>of</B> America (USA), commonly known as the United States (U.S. or US) or America, is"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_the_United_States_(Web_Colors).svg?width=300> ;
+<http://musickg.org/artist/Dust_of_Apollon> music:dbpediaAbstract "The United States <B>of</B> America (USA), commonly known as the United States (U.S."@en ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/United%20States%20-%20Location%20Map%20%282013%29%20-%20USA%20-%20UNOCHA.svg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q30> .
 
-<http://musickg.org/artist/Egzod> music:dbpediaAbstract "NoCopyrightSounds (NCS) is a British record label that releases royalty-free electronic dance music. Starting as a YouTube channel, it has reached 1 million paid downloads in 2017."@en ;
+<http://musickg.org/artist/Egzod> music:dbpediaAbstract "NoCopyrightSounds (NCS) is a British record label that releases royalty-free electronic dance music."@en ;
     music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/NCS_logo.svg?width=300> ;
     owl:sameAs <http://www.wikidata.org/entity/Q21006848> .
 
 <http://musickg.org/artist/Elias> music:dbpediaAbstract "<B>Elias</B> Magnus Fries FRS FRSE FLS RAS (15 August 1794 – 8 February 1878) was a Swedish mycologist and botanist."@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Elias_Magnus_Fries.jpg?width=300> ;
+    music:hometown "Sweden" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Elias%20Magnus%20Fries.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q15405> .
 
 <http://musickg.org/artist/Erykah_Badu> music:dbpediaAbstract "Erica Abi Wright (born February 26, 1971), known professionally as <B>Erykah</B> <B>Badu</B> (), is an American"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Erykah_Badu_in_Nation19_Magazine.jpg?width=300> ;
+    music:hometown "United States" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Erykah%20Badu%20in%20Nation19%20Magazine.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q223875> .
 
 <http://musickg.org/artist/Fee_Gonzales> music:dbpediaAbstract "Sofia ( SOH-<B>fee</B>-ə, SOF-; Bulgarian: София, romanized: Sofiya, IPA: [ˈsɔfijɐ] ()) is the capital and"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Russian_church_(37591925970).jpg?width=300> ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Russian%20church%20%2837591925970%29.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q472> .
 
-<http://musickg.org/artist/French_Montana> music:dbpediaAbstract "), better known by his stage name <B>French</B> <B>Montana</B>, is a Moroccan-American rapper. Born and raised in Morocco"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/FM_PRESS03-A.png?width=300> ;
+<http://musickg.org/artist/French_Montana> music:dbpediaAbstract "), better known by his stage name <B>French</B> <B>Montana</B>, is a Moroccan-American rapper."@en ;
+    music:hometown "Morocco" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/FM%20PRESS03-A.png> ;
     owl:sameAs <http://www.wikidata.org/entity/Q1455261> .
 
 <http://musickg.org/artist/Genesis> music:dbpediaAbstract "The Sega <B>Genesis</B>, known as the Mega Drive outside North America, is a 16-bit home video game"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/GenesisLogo.png?width=300> ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Sega-Genesis-NA-Mk2-Console-Set.png> ;
     owl:sameAs <http://www.wikidata.org/entity/Q10676> .
 
+<http://musickg.org/artist/Good_Times_Ahead> music:dbpediaAbstract ""@en ;
+    music:hometown "United States" ;
+    owl:sameAs <http://www.wikidata.org/entity/Q21512884> .
+
 <http://musickg.org/artist/Guustavv> music:dbpediaAbstract "Jean Désiré <B>Gustave</B> Courbet (UK:  KOOR-bay, US:  koor-BAY, French: [ɡystav kuʁbɛ]; 10 June 1819"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Gustave_Courbet,_photograph_Atelier_Nadar,_c._1860s.jpg?width=300> ;
+    music:hometown "France" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Gustave%20Courbet%2C%20photograph%20Atelier%20Nadar%2C%20c.%201860s.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q34618> .
 
-<http://musickg.org/artist/Harry_Styles> music:dbpediaAbstract "<B>Harry</B> Edward <B>Styles</B> (born 1 February 1994) is an English singer, songwriter, and actor. His musical"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/HarryStylesWembley170623_(65_of_93)_(52982678051)_(cropped_2).jpg?width=300> ;
+<http://musickg.org/artist/Harry_Styles> music:dbpediaAbstract "<B>Harry</B> Edward <B>Styles</B> (born 1 February 1994) is an English singer, songwriter, and actor."@en ;
+    music:hometown "United Kingdom" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/HarryStylesWembley170623%20%2814%20of%2093%29%20%2852982076132%29%20%28cropped%29.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q3626966> .
 
 <http://musickg.org/artist/Headie_One> music:dbpediaAbstract "Irving Adjei (born 6 October 1994), known professionally as <B>Headie</B> <B>One</B>, is a British rapper and"@en ;
+    music:hometown "United Kingdom" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Headie%20One.png> ;
     owl:sameAs <http://www.wikidata.org/entity/Q60736888> .
 
 <http://musickg.org/artist/Indiomar> music:dbpediaAbstract "East <B>Indiaman</B> was a general name for any sailing ship operating under charter or licence to any of"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Sjöfartsmuseet_Akvariet_Memorial_Hall_East_Indiaman_Finland_1761_03.jpg?width=300> ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/EastIndiaman.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q2035668> .
 
-<http://musickg.org/artist/Influencers_Worship> music:dbpediaAbstract " religious activities, particularly for Christian <B>worship</B> services. The term is often used by"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Basilica_cattedrale_di_San_Giusto_Martire_(IV)_(39452708702).jpg?width=300> ;
+<http://musickg.org/artist/Influencers_Worship> music:dbpediaAbstract " religious activities, particularly for Christian <B>worship</B> services."@en ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/SanSalvadorValdedios-1.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q16970> .
 
-<http://musickg.org/artist/Internet_Money> music:dbpediaAbstract " online services or over the <B>Internet</B>. Electronic commerce draws on technologies such as mobile"@en ;
+<http://musickg.org/artist/Internet_Money> music:dbpediaAbstract " online services or over the <B>Internet</B>."@en ;
     music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Store_Closing_Flags.jpg?width=300> ;
     owl:sameAs <http://www.wikidata.org/entity/Q484847> .
 
 <http://musickg.org/artist/JRY> music:dbpediaAbstract "The <B>JRY</B> Trust (formerly <B>JRY</B> Corporation), is headed by John Harrington and was set up after the"@en ;
     owl:sameAs <http://www.wikidata.org/entity/Q16929842> .
 
-<http://musickg.org/artist/Jacob_Banks> music:dbpediaAbstract "<B>Jacob</B> <B>Banks</B> (born 24 July 1991) is a British singer and songwriter from Birmingham. <B>Jacob</B> <B>Banks</B> won"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Jacob_Banks_Piknik_i_Parken_2018_(194941)-2.jpg?width=300> ;
+<http://musickg.org/artist/Jacob_Banks> music:dbpediaAbstract "<B>Jacob</B> <B>Banks</B> (born 24 July 1991) is a British singer and songwriter from Birmingham."@en ;
+    music:hometown "Nigeria" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Jacob%20Banks%20Piknik%20i%20Parken%202018%20%28194941%29-2.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q16995276> .
 
-<http://musickg.org/artist/Jake_Adkins> music:dbpediaAbstract "Chlaenius is a large and diverse genus of ground beetle. It is native to the Palearctic (including Europe), the Near East, North Africa, Afrotropical region, and the Nearctic. Worldwide, roughly 1,000 species are currently recognized  with the majority of known species occurring in the Oriental and Afrotropical regions. The genus is divided into many subgenera."@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Chlaenius_Reitter.jpg?width=300> ;
+<http://musickg.org/artist/Jake_Adkins> music:dbpediaAbstract "Chlaenius is a large and diverse genus of ground beetle."@en ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Chlaenius%20Reitter.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q1767873> .
 
-<http://musickg.org/artist/James_Arthur> music:dbpediaAbstract "<B>James</B> <B>Arthur</B> (born 2 March 1988) is an English singer and songwriter. He rose to fame after winning"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/James_Arthur-6645_(cropped).jpg?width=300> ;
+<http://musickg.org/artist/James_Arthur> music:dbpediaAbstract "<B>James</B> <B>Arthur</B> (born 2 March 1988) is an English singer and songwriter."@en ;
+    music:hometown "United Kingdom" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/James%20Arthur-6633.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q717626> .
 
 <http://musickg.org/artist/Jay_Hardway> music:dbpediaAbstract "Jobke Pieter Hendrik Heiblom (born 27 April 1991), better known by his stage name <B>Jay</B> <B>Hardway</B>"@en ;
+    music:hometown "Kingdom of the Netherlands" ;
     music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Jay_Hardway_Logo.jpg?width=300> ;
     owl:sameAs <http://www.wikidata.org/entity/Q16233839> .
 
-<http://musickg.org/artist/Jesse_McCartney> music:dbpediaAbstract "<B>Jesse</B> <B>McCartney</B> (born April 9, 1987) is an American singer, songwriter, and actor. He achieved fame"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Jesse_McCartney_Shankbone_2010_NYC_crop.jpg?width=300> ;
+<http://musickg.org/artist/Jesse_McCartney> music:dbpediaAbstract "<B>Jesse</B> <B>McCartney</B> (born April 9, 1987) is an American singer, songwriter, and actor."@en ;
+    music:hometown "United States" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Jesse%20McCartney%20Shankbone%202010%20NYC%20crop.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q191842> .
 
-<http://musickg.org/artist/Joe_Stone> music:dbpediaAbstract " the <B>stage</B> names Inmado and <B>Joe</B> <B>Stone</B>. After producing for artists such R3hab, Havana Brown, <B>Joe</B> <B>Stone</B>"@en ;
+<http://musickg.org/artist/Joe_Stone> music:dbpediaAbstract " the <B>stage</B> names Inmado and <B>Joe</B> <B>Stone</B>."@en ;
+    music:hometown "Kingdom of the Netherlands" ;
     owl:sameAs <http://www.wikidata.org/entity/Q24480698> .
 
-<http://musickg.org/artist/LANY> music:dbpediaAbstract "England is a country that is part of the United Kingdom. It shares <B>land</B> borders with Wales to the"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_England.svg?width=300> ;
+<http://musickg.org/artist/LANY> music:dbpediaAbstract "England is a country that is part of the United Kingdom."@en ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/England%20satellite%20image.png> ;
     owl:sameAs <http://www.wikidata.org/entity/Q21> .
 
 <http://musickg.org/artist/Local_Natives> music:dbpediaAbstract "<B>Local</B> <B>Natives</B> is an American indie rock band based in Silver Lake, Los Angeles, California, United"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Local_Natives_(2013).jpg?width=300> ;
+    music:hometown "United States" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Local%20Natives%20%282013%29.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q2613632> .
 
-<http://musickg.org/artist/Luccas_Carlos> music:dbpediaAbstract "This is a list of minor-planet discoverers credited by the Minor Planet Center with the discovery of one or several minor planets (such as near-Earth and main-belt asteroids, Jupiter trojans and distant objects). As of January 2020, the discovery of 543,334 numbered minor planets are credited to 1034 astronomers and 244 observatories, telescopes or surveys (see ). For how a discovery is made and a description of the tables below, see observations of small Solar System bodies and , respectively."@en ;
+<http://musickg.org/artist/Luccas_Carlos> music:dbpediaAbstract "This is a list of minor-planet discoverers credited by the Minor Planet Center with the discovery of one or several minor planets (such as near-Earth and main-belt asteroids, Jupiter trojans and distant objects)."@en ;
     music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Vitebsk_amateur_astronomical_observatory_-_Nevskiy_and_tel.jpg?width=300> ;
     owl:sameAs <http://www.wikidata.org/entity/Q48995948> .
 
 <http://musickg.org/artist/Luis_Fonsi> music:dbpediaAbstract "<B>Luis</B> Alfonso Rodríguez López-Cepero (born April 15, 1978), known by his stage name <B>Luis</B> <B>Fonsi</B>, is a"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Luis_Fonsi_2015_(cropped).jpg?width=300> ;
+    music:hometown "United States" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Luis%20Fonsi%202015%20%28cropped%29.JPG> ;
     owl:sameAs <http://www.wikidata.org/entity/Q1387726> .
 
 <http://musickg.org/artist/Mach_%26_Daddy> music:dbpediaAbstract "Ernst Waldfried Josef Wenzel <B>Mach</B> (; German: [ˈɛɐ̯nst <B>max</B>]; 18 February 1838 – 19 February 1916"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Ernst_Mach_01.jpg?width=300> ;
+    music:hometown "Kingdom of Bohemia" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Ernst-Mach-1900.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q93996> .
 
-<http://musickg.org/artist/Mackieaveliko> music:dbpediaAbstract "Yaga & Mackie are a reggaeton duo from Puerto Rico. They are signed to Los <B>Mackieavelikos</B> Inc."@en ;
+<http://musickg.org/artist/Mackieaveliko> music:dbpediaAbstract "Yaga & Mackie are a reggaeton duo from Puerto Rico."@en ;
+    music:hometown "Puerto Rico" ;
     owl:sameAs <http://www.wikidata.org/entity/Q8046672> .
 
-<http://musickg.org/artist/Madison_Beer> music:dbpediaAbstract "<B>Madison</B> Elle <B>Beer</B> (born March 5, 1999) is an American singer. On February 2, 2018, she released her debut extended play, As She Pleases."@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Madison_Beer_@_Greek_Theatre_L.A._06_13_2024_(53839434064)_(cropped_3x4).jpg?width=300> ;
+<http://musickg.org/artist/Madison_Beer> music:dbpediaAbstract "<B>Madison</B> Elle <B>Beer</B> (born March 5, 1999) is an American singer."@en ;
+    music:hometown "United States" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Madison%20Beer%20%40%20Grammy%20Museum%2001%2017%202024%20%2853835126344%29%20%28cropped%29.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q15059490> .
 
 <http://musickg.org/artist/Majid_Jordan> music:dbpediaAbstract "<B>Majid</B> <B>Jordan</B> is a Canadian R&B duo, consisting of singer <B>Majid</B> Al Maskati and producer <B>Jordan</B>"@en ;
     owl:sameAs <http://www.wikidata.org/entity/Q16950165> .
 
 <http://musickg.org/artist/Major_Lazer> music:dbpediaAbstract "<B>Major</B> <B>Lazer</B> is a Jamaican-American electronic dance music trio, which includes record producer"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Diplo_and_Walshy_Fire_of_Major_Lazer_@_Flow_2015.jpg?width=300> ;
+    music:hometown "United States" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/MajorLazer.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q2604214> .
 
 <http://musickg.org/artist/Martin_Garrix> music:dbpediaAbstract "<B>Martijn</B> Gerard Garritsen (Dutch: [mɑrˈtɛiŋ ɣəˈrɑrt ˈxɑrɪtsə(n)]), professionally known as <B>Martin</B>"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Martin_Garrix_@_Web_Summit_2017.jpg?width=300> ;
+    music:hometown "Netherlands" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Martin%20Garrix%20-%20Superbloom%20Festival%202023%20-%20DSC2689.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q14544318> .
 
 <http://musickg.org/artist/Mayer_Hawthorne> music:dbpediaAbstract "Andrew <B>Mayer</B> Cohen (born February 2, 1979), better known by his stage name <B>Mayer</B> <B>Hawthorne</B>, is an"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Mayer_Hawthorne_at_The_Natural_History_Museum_in_Los_Angeles_on_6-1-2018.jpg?width=300> ;
+    music:hometown "United States" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Mayer%20Hawthorne.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q1248990> .
 
-<http://musickg.org/artist/Mc_Maha> music:dbpediaAbstract " <B>main</B> page. The <B>main</B> index provides an overview of the entire minor-planet catalog. Also see the"@en ;
+<http://musickg.org/artist/Mc_Maha> music:dbpediaAbstract " <B>main</B> page."@en ;
     music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/OOjs_UI_icon_table-merge-cells.svg?width=300> ;
     owl:sameAs <http://www.wikidata.org/entity/Q313521> .
 
@@ -214,74 +260,91 @@
     owl:sameAs <http://www.wikidata.org/entity/Q203059> .
 
 <http://musickg.org/artist/Molife> music:dbpediaAbstract "<B>Mobile</B> ( moh-BEEL, French: [mɔbil] ()) is the county seat of <B>Mobile</B> County, Alabama, United States"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Mobile,_Alabama_Skyline_(2022).jpg?width=300> ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Mobile%2C%20Alabama%20skyline.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q79875> .
 
-<http://musickg.org/artist/Mudd_Bughatti> music:dbpediaAbstract " that lasted in the 2000s. Bands such as Foo Fighters, Live, Bush, Puddle of <B>Mudd</B>, Staind, Nickelback"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Nickelbackwembleyarena.jpg?width=300> ;
+<http://musickg.org/artist/Mudd_Bughatti> music:dbpediaAbstract " that lasted in the 2000s."@en ;
+    music:hometown "United Kingdom" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Foo%20Fighters%20-%20Grohl%20and%20Mendel.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q379671> .
 
 <http://musickg.org/artist/Musiq_Soulchild> music:dbpediaAbstract "Taalib Johnson, professionally known as <B>Musiq</B> <B>Soulchild</B> or simply <B>Musiq</B> (; born September 16, 1977"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Musiq_Soulchild.jpg?width=300> ;
+    music:hometown "United States" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Musiq-Soulchild%202009-02-27.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q1955333> .
 
 <http://musickg.org/artist/Nas> music:dbpediaAbstract "<B>Nasir</B> bin Olu Dara Jones (; born September 14, 1973), known professionally as <B>Nas</B> (), is an"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Nas_(52380600682)_(cropped).jpg?width=300> ;
+    music:hometown "United States" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Nas%20%2852381849239%29%20%28cropped%29.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q194220> .
 
 <http://musickg.org/artist/Nate_VanDeusen> music:dbpediaAbstract "Nathaniel Dwayne Hale (August 19, 1969 – March 15, 2011), known professionally as <B>Nate</B> Dogg, was an"@en ;
+    music:hometown "United States" ;
     music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Nate-Dogg-2006.jpg?width=300> ;
     owl:sameAs <http://www.wikidata.org/entity/Q47159> .
 
-<http://musickg.org/artist/Nimo> music:dbpediaAbstract "<B>Nima</B> Yaghobi (born 25 December 1995), known professionally as <B>Nimo</B>, is a German rapper. He is signed to 385idéal record label."@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/2018_Nimo_-_by_2eight_-_DSC7921.jpg?width=300> ;
+<http://musickg.org/artist/Nimo> music:dbpediaAbstract "<B>Nima</B> Yaghobi (born 25 December 1995), known professionally as <B>Nimo</B>, is a German rapper."@en ;
+    music:hometown "Germany" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/2018%20Nimo%20-%20by%202eight%20-%20DSC7921.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q27877116> .
 
 <http://musickg.org/artist/Oriente> music:dbpediaAbstract "Club Deportivo <B>Oriente</B> Petrolero (Spanish pronunciation: [kluβ depoɾˈtivo oˈɾjeŋte petɾoˈleɾo]) is"@en ;
     music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Oriente_Petrolero.png?width=300> ;
     owl:sameAs <http://www.wikidata.org/entity/Q127923> .
 
-<http://musickg.org/artist/Orion_Paxx> music:dbpediaAbstract "Optimus Prime, known in Japan as Convoy (コンボイ, Konboi), is a fictional character from the Transformers franchise. He is a Cybertronian, an extraterrestrial species of sentient self-configuring modular robotic lifeforms (e.g.: cars and other objects), a synergistic blend of biological evolution and technological engineering. In almost every version of the mythos, Optimus is the leader of the Autobots, a faction of Transformers who are rivals of the Decepticons, another faction. He is defined by his strong moral character and is almost always portrayed as the primary hero of the story, opposing the evil Decepticon leader Megatron."@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/optimusprime-originaltoy.jpg?width=300> ;
+<http://musickg.org/artist/Orion_Paxx> music:dbpediaAbstract "Optimus Prime, known in Japan as Convoy (コンボイ, Konboi), is a fictional character from the Transformers franchise."@en ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Optimus%20Prime%20Model.JPG> ;
     owl:sameAs <http://www.wikidata.org/entity/Q151583> .
 
 <http://musickg.org/artist/Parov_Stelar> music:dbpediaAbstract "Marcus Füreder (born 27 November 1974 in Linz, Upper Austria) better known by his stage name, <B>Parov</B>"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Parov_Stelar_2024_(c)_Tanja_Schalling.jpg?width=300> ;
+    music:hometown "Austria" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Parov%20Stelar%202024%20%28c%29%20Tanja%20Schalling%20%28cropped%29.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q89525> .
 
 <http://musickg.org/artist/Paul_McCartney> music:dbpediaAbstract "Sir James <B>Paul</B> <B>McCartney</B>  (born 18 June 1942) is an English singer, songwriter, musician, composer"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/ACL18051018-124_(44619445335)_(cropped).jpg?width=300> ;
+    music:hometown "United Kingdom" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Paul%20McCartney%20in%20October%202018.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q2599> .
 
-<http://musickg.org/artist/Polo_%26_Pan> music:dbpediaAbstract "Vasas SC (Hungarian pronunciation: [ˈvɒʃɒʃ]) is one of Hungary's major sports clubs. Most of its facilities are situated in Budapest's 13th district in the north of the town. Members of the Hungarian Union of Iron Workers founded the club as Vas-és Fémmunkások Sport Clubja, the \"Sport Club of Iron and Metal Workers\", on 16 March 1911. The club colours are red and blue."@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Vasas_SC.svg?width=300> ;
+<http://musickg.org/artist/Polo_%26_Pan> music:dbpediaAbstract "Vasas SC (Hungarian pronunciation: [ˈvɒʃɒʃ]) is one of Hungary's major sports clubs."@en ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Vasas%20sc%20argentina%201968.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q255296> .
+
+<http://musickg.org/artist/Pop_Smoke> music:dbpediaAbstract ""@en ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Pop_Smoke_-_Faith.png?width=300> ;
+    owl:sameAs <http://www.wikidata.org/entity/Q107526334> .
 
 <http://musickg.org/artist/Poppy_Ajudha> music:dbpediaAbstract "Papaverine (Latin papaver, \"<B>poppy</B>\") is an opium alkaloid antispasmodic drug, used primarily in the"@en ;
     music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Papaverine.svg?width=300> ;
     owl:sameAs <http://www.wikidata.org/entity/Q10299641> .
 
 <http://musickg.org/artist/Randy_Nota_Loka> music:dbpediaAbstract "Jowell & <B>Randy</B> are a Puerto Rican reggaeton duo composed of Joel Muñoz (born March 3, 1982) and"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Jowell_&_Randy_with_Dulce_Osuna.jpg?width=300> ;
+    music:hometown "Puerto Rico" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Jowell%20%26%20Randy%20with%20Dulce%20Osuna.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q1543804> .
 
-<http://musickg.org/artist/Robbie_Williams> music:dbpediaAbstract "Robert Peter <B>Williams</B> (born 13 February 1974) is an English singer-songwriter and entertainer. He"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Robbie_Williams_at_the_2024_Toronto_International_Film_Festival_(cropped).jpg?width=300> ;
+<http://musickg.org/artist/Robbie_Williams> music:dbpediaAbstract "Robert Peter <B>Williams</B> (born 13 February 1974) is an English singer-songwriter and entertainer."@en ;
+    music:hometown "United Kingdom" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Robbie%20Williams%20at%20the%202024%20Toronto%20International%20Film%20Festival%20%28cropped%29.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q47875> .
 
-<http://musickg.org/artist/Royal_%26_the_Serpent> music:dbpediaAbstract "The <B>Royal</B> Navy (RN) is the United Kingdom's naval warfare force. Although warships were used by the"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Logo_of_the_Royal_Navy.svg?width=300> ;
+<http://musickg.org/artist/Royal_%26_the_Serpent> music:dbpediaAbstract "The <B>Royal</B> Navy (RN) is the United Kingdom's naval warfare force."@en ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Victory%20Portsmouth%20um%201900.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q172771> .
 
 <http://musickg.org/artist/Rvssian> music:dbpediaAbstract "Tarik Johnston, commonly known as <B>Rvssian</B> (previously as RUSSIAN), is a Jamaican record producer"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Rvssian.jpg?width=300> ;
+    music:hometown "Jamaica" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Rvssian.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q19968637> .
 
 <http://musickg.org/artist/Ryllz> music:dbpediaAbstract "Marshal Edward <B>Rydz</B>-Śmigły [ˈɛdvard ˈrɨdz ˈɕmiɡwɨ] () (11 March 1886 – 2 December 1941; nom de"@en ;
+    music:hometown "Poland" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Edward%20Rydz-%C5%9Amig%C5%82y%2C%201930s.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q295688> .
 
 <http://musickg.org/artist/Ryn_Weaver> music:dbpediaAbstract "Erin Michelle “Aryn” Wüthrich (born August 10, 1992), also known professionally as <B>Ryn</B> <B>Weaver</B>, is"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Ryn_Weaver_2015.jpg?width=300> ;
+    music:hometown "United States" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Ryn%20Weaver%202015.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q19325230> .
 
 <http://musickg.org/artist/STVCKS> music:dbpediaAbstract " public limited company is a company whose ownership is organized via shares of <B>stock</B> which are intended"@en ;
@@ -289,30 +352,37 @@
     owl:sameAs <http://www.wikidata.org/entity/Q891723> .
 
 <http://musickg.org/artist/Sean_Kingston> music:dbpediaAbstract "Kisean Paul Anderson (born February 3, 1990), known professionally as <B>Sean</B> <B>Kingston</B>, is an American"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Sean_Kingston_2013.jpg?width=300> ;
+    music:hometown "United States" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Sean%20Kingston%20Shout%20Awards.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q216934> .
 
-<http://musickg.org/artist/Sean_Tizzle> music:dbpediaAbstract "The Journey is the first studio album by Nigerian Afro Pop artist <B>Sean</B> <B>Tizzle</B>. It was released on"@en ;
+<http://musickg.org/artist/Sean_Tizzle> music:dbpediaAbstract "The Journey is the first studio album by Nigerian Afro Pop artist <B>Sean</B> <B>Tizzle</B>."@en ;
     music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Sean_Tizzle_The_Journey.jpg?width=300> ;
     owl:sameAs <http://www.wikidata.org/entity/Q19893476> .
 
-<http://musickg.org/artist/Semser> music:dbpediaAbstract "Peter <B>Seeger</B> (May 3, 1919 – January 27, 2014) was an American folk singer and social activist. He"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Pete_Seeger_NYWTS.jpg?width=300> ;
+<http://musickg.org/artist/Semser> music:dbpediaAbstract "Peter <B>Seeger</B> (May 3, 1919 – January 27, 2014) was an American folk singer and social activist."@en ;
+    music:hometown "United States" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Pete%20Seeger%20NYWTS.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q244441> .
 
+<http://musickg.org/artist/Sero_El_Mero> music:dbpediaAbstract ""@en .
+
 <http://musickg.org/artist/Sigala> music:dbpediaAbstract "Bruce Fielder (born 1 November 1992), known professionally as <B>Sigala</B>, is an English DJ, record"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/SIGALA_FILM_000019610004_---_5.jpg?width=300> ;
+    music:hometown "United Kingdom" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/2016%20Open%20Beatz%20-%20Sigala%20-%20by%202eight%20-DSC%202748.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q20973111> .
 
 <http://musickg.org/artist/Silva> music:dbpediaAbstract "Aníbal António Cavaco <B>Silva</B>, GCC, GColL (Portuguese pronunciation: [ɐˈniβɐɫ ɐ̃ˈtɔɲu kɐˈvaku ˈsiɫvɐ"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Анибал_Каваку_Силва_01_(13-06-2013)_(cropped).jpg?width=300> ;
+    music:hometown "Portugal" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/%D0%90%D0%BD%D0%B8%D0%B1%D0%B0%D0%BB%20%D0%9A%D0%B0%D0%B2%D0%B0%D0%BA%D1%83%20%D0%A1%D0%B8%D0%BB%D0%B2%D0%B0%2001%20%2813-06-2013%29%20%28cropped%29.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q57398> .
 
 <http://musickg.org/artist/Sinead_Harnett> music:dbpediaAbstract "<B>Sinéad</B> Monica <B>Harnett</B> (born 12 October 1989) is an English singer and songwriter born and raised in Finchley, London."@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/SineadHarnett_(cropped).jpg?width=300> ;
+    music:hometown "Thailand" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Sinead%20Harnett%202015%20%28cropped%29.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q18358985> .
 
-<http://musickg.org/artist/Sir_Charles_Jones> music:dbpediaAbstract "The Great Lakes, a collection of five freshwater lakes located in North America, have been sailed upon since at least the 17th century, and thousands of ships have been sunk while traversing them. Many of these ships were never found, so the exact number of shipwrecks in the Lakes is unknown; the Great Lakes Shipwreck Museum approximates 6,000 ships and 30,000 lives lost, while historian and mariner Mark Thompson has estimated that the total number of wrecks is likely more than 25,000. In the period between 1816, when the Invincible was lost, to the sinking of the Edmund Fitzgerald in 1975, the Whitefish Point area alone has claimed at least 240 ships."@en ;
+<http://musickg.org/artist/Sir_Charles_Jones> music:dbpediaAbstract "The Great Lakes, a collection of five freshwater lakes located in North America, have been sailed upon since at least the 17th century, and thousands of ships have been sunk while traversing them."@en ;
     music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Great_Lakes_1913_Storm_Shipwrecks.png?width=300> ;
     owl:sameAs <http://www.wikidata.org/entity/Q6639298> .
 
@@ -321,13 +391,14 @@
     owl:sameAs <http://www.wikidata.org/entity/Q6598744> .
 
 <http://musickg.org/artist/Swanky_Tunes> music:dbpediaAbstract "<B>Swanky</B> <B>Tunes</B> (stylized as <B>SWΛNKУ</B> <B>TUИES</B>) are a Russian electronic dance music trio composed of Vadim"@en ;
+    music:hometown "Russia" ;
     owl:sameAs <http://www.wikidata.org/entity/Q4050448> .
 
-<http://musickg.org/artist/T-Spoon> music:dbpediaAbstract "Spain (Spanish: España [esˈpaɲa] ()), officially the Kingdom of Spain (Spanish: Reino de España), is a country in Southwestern Europe with some pockets of Spanish territory across the Strait of Gibraltar and the Atlantic Ocean. Its continental European territory is situated on the Iberian Peninsula. Its territory also includes two archipelagoes: the Canary Islands off the coast of Africa, and the Balearic Islands in the Mediterranean Sea. The African enclaves of Ceuta, Melilla, and Peñón de Vélez de la Gomera make Spain the only European country to have a physical border with an African country (Morocco). Several small islands in the Alboran Sea are also part of Spanish territory. The country's mainland is bordered to the south and east by the Mediterranean Sea except for a small land boun"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Spain.svg?width=300> ;
+<http://musickg.org/artist/T-Spoon> music:dbpediaAbstract "Spain (Spanish: España [esˈpaɲa] ()), officially the Kingdom of Spain (Spanish: Reino de España), is a country in Southwestern Europe with some pockets of Spanish territory across the Strait of Gibraltar and the Atlantic Ocean."@en ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Spain%20-%20Location%20Map%20%282013%29%20-%20ESP%20-%20UNOCHA.svg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q29> .
 
-<http://musickg.org/artist/The_Summer_Set> music:dbpediaAbstract "<B>The</B> University of Virginia (U.Va. or UVA) is a public research university in Charlottesville"@en ;
+<http://musickg.org/artist/The_Summer_Set> music:dbpediaAbstract "<B>The</B> University of Virginia (U.Va."@en ;
     music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/University_of_Virginia_seal.svg?width=300> ;
     owl:sameAs <http://www.wikidata.org/entity/Q14713414> .
 
@@ -335,23 +406,28 @@
     music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/TomTomsk.png?width=300> ;
     owl:sameAs <http://www.wikidata.org/entity/Q329510> .
 
-<http://musickg.org/artist/Tony_Avila> music:dbpediaAbstract " held until 2015. He currently runs the <B>Tony</B> Blair Institute for Global Change."@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Tony_Blair_(2010)_(3x4_cropped).jpg?width=300> ;
+<http://musickg.org/artist/Tony_Avila> music:dbpediaAbstract " held until 2015."@en ;
+    music:hometown "United Kingdom" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Tony%20Blair%202010%20%28cropped%29.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q9545> .
 
 <http://musickg.org/artist/V%C3%89RIT%C3%89> music:dbpediaAbstract "Kelsey Regina Byrne (born May 6, 1990), known professionally as <B>Vérité</B> (stylized as <B>VÉRITÉ</B>), is an"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Verite_@_The_Roxy_10_21_2021_(51784383850)_(cropped).jpg?width=300> ;
+    music:hometown "United States" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Verite%20%40%20El%20Rey%2003%2016%202023%20%2852756493315%29.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q20880877> .
 
 <http://musickg.org/artist/Vicetone> music:dbpediaAbstract "<B>Vicetone</B> is a Dutch electronic musical artist and production duo formed by Ruben den Boer ((Dutch"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Grey_window_shoot_(Final_3).jpg?width=300> ;
+    music:hometown "Netherlands" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Vicetone%20el%20pasado%2016%20de%20Agosto%20en%20Nightfall%20Festival%20realizado%20en%20Alicante..jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q15978191> .
 
 <http://musickg.org/artist/Wolfgang_Gartner> music:dbpediaAbstract "Joseph Thomas Youngman (born March 17, 1982), better known by his stage name <B>Wolfgang</B> <B>Gartner</B>, is"@en ;
-    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/WG_Press_Shot_2021.jpg?width=300> ;
+    music:hometown "United States" ;
+    music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Spring%20Awakening%20Music%20Festival%206%2015%202013%20%289120517429%29%20%28cropped%29.jpg> ;
     owl:sameAs <http://www.wikidata.org/entity/Q49010> .
 
-<http://musickg.org/artist/Zhan%C3%A9> music:dbpediaAbstract "<B>Zhané</B> ( <B>zhah</B>-NAY) was an American R&B/hip hop soul duo, best known for their 1993 hit \"Hey Mr. D.J"@en ;
+<http://musickg.org/artist/Zhan%C3%A9> music:dbpediaAbstract "<B>Zhané</B> ( <B>zhah</B>-NAY) was an American R&B/hip hop soul duo, best known for their 1993 hit \"Hey Mr."@en ;
+    music:hometown "United States" ;
     music:imageUrl <http://commons.wikimedia.org/wiki/Special:FilePath/Renee_Neufville_w_RH_Factor_Live_in_Marseille_-2.jpg?width=300> ;
     owl:sameAs <http://www.wikidata.org/entity/Q197415> .
 

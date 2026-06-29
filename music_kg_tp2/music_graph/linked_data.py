@@ -1,114 +1,119 @@
 import os
 import time
 import requests
+import urllib3
 from rdflib import Graph, Namespace, Literal, URIRef
 from SPARQLWrapper import SPARQLWrapper, JSON
 from rdflib.namespace import RDF, OWL
 
-# Namespace idêntico ao usado nas queries SPARQL do Django
+# Desativa os avisos vermelhos de SSL no terminal
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 MUSIC = Namespace("http://musickg.org/data/")
 LOCAL_SPARQL = "http://localhost:7200/repositories/music-kg-tp2"
 
+
 def get_local_artists(limit=100):
-    """Obtém os artistas locais diretamente do GraphDB."""
     wrapper = SPARQLWrapper(LOCAL_SPARQL)
-    wrapper.setQuery(f"""
-        PREFIX music: <http://musickg.org/data/>
-        SELECT ?artistUri ?name WHERE {{
-            ?artistUri a music:Artist ;
-                       music:artistName ?name .
-        }} LIMIT {limit}
-    """)
+    wrapper.setQuery(
+        f"PREFIX music: <http://musickg.org/data/> SELECT ?artistUri ?name WHERE {{ ?artistUri a music:Artist ; music:artistName ?name . }} LIMIT {limit}")
     wrapper.setReturnFormat(JSON)
     try:
         results = wrapper.query().convert()
         return [(r['artistUri']['value'], r['name']['value']) for r in results['results']['bindings']]
-    except Exception as e:
-        print(f"Erro ao ligar ao GraphDB: {e}")
+    except Exception:
         return []
 
+
 def query_dbpedia_robust(artist_name):
-    """Usa a DBpedia Lookup API e tenta sacar também o thumbnail da DBpedia."""
     url = f"https://lookup.dbpedia.org/api/search?query={artist_name.replace(' ', '+')}&format=JSON"
     headers = {"User-Agent": "MusicKG_UniversityProject/1.0"}
 
     try:
-        response = requests.get(url, headers=headers, timeout=10).json()
-        docs = response.get('docs', [])
-        if not docs: return None
+        # 1. Lookup Inicial (requests com verify=False)
+        response = requests.get(url, headers=headers, timeout=10, verify=False).json()
+        if not response.get('docs'): return None
 
-        best_match = docs[0]
+        best_match = response['docs'][0]
         resource_uri = best_match['resource'][0]
-        abstract = best_match.get('comment', [''])[0]
-        if not abstract: return None
+        short_abstract = best_match.get('comment', [''])[0]
 
-        sparql = SPARQLWrapper("https://dbpedia.org/sparql")
-        sparql.setQuery(f"""
+        # 2. SPARQL via requests (Contorna os erros do SPARQLWrapper)
+        sparql_query = f"""
             PREFIX owl: <http://www.w3.org/2002/07/owl#>
             PREFIX dbo: <http://dbpedia.org/ontology/>
-            SELECT ?wikidata ?thumbnail WHERE {{
-                OPTIONAL {{ 
-                    <{resource_uri}> owl:sameAs ?wikidata . 
-                    FILTER(STRSTARTS(STR(?wikidata), "http://www.wikidata.org/entity/")) 
-                }}
+            SELECT ?abstract ?wikidata ?thumbnail WHERE {{
+                OPTIONAL {{ <{resource_uri}> dbo:abstract ?abstract . FILTER(lang(?abstract) = "en") }}
+                OPTIONAL {{ <{resource_uri}> owl:sameAs ?wikidata . FILTER(STRSTARTS(STR(?wikidata), "http://www.wikidata.org/entity/")) }}
                 OPTIONAL {{ <{resource_uri}> dbo:thumbnail ?thumbnail . }}
             }} LIMIT 1
-        """)
-        sparql.setReturnFormat(JSON)
+        """
 
+        r_db = requests.get("https://dbpedia.org/sparql", params={"query": sparql_query, "format": "json"},
+                            headers=headers, timeout=10, verify=False)
+
+        final_abstract = short_abstract
         wikidata_uri = None
         thumbnail_uri = None
-        try:
-            wd_res = sparql.query().convert()['results']['bindings']
-            if wd_res:
-                wikidata_uri = wd_res[0].get('wikidata', {}).get('value')
-                thumbnail_uri = wd_res[0].get('thumbnail', {}).get('value')
-        except Exception:
-            pass
+
+        if r_db.status_code == 200:
+            bindings = r_db.json().get('results', {}).get('bindings', [])
+            if bindings:
+                if 'abstract' in bindings[0]: final_abstract = bindings[0]['abstract']['value']
+                if 'wikidata' in bindings[0]: wikidata_uri = bindings[0]['wikidata']['value']
+                if 'thumbnail' in bindings[0]: thumbnail_uri = bindings[0]['thumbnail']['value']
 
         return {
-            'abstract': abstract,
+            'abstract': final_abstract,
             'wikidata': wikidata_uri,
             'thumbnail': thumbnail_uri
         }
-    except Exception:
+    except Exception as e:
         pass
     return None
 
+
 def query_wikidata(wikidata_uri):
-    """Consulta a Wikidata, mas faz a imagem OPTIONAL para não falhar a query toda."""
-    sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
     wd_id = wikidata_uri.split("/")[-1]
-    sparql.setQuery(f"""
+
+    # A magia acontece aqui na linha do ?country: adicionámos (wdt:P19/wdt:P17)
+    sparql_query = f"""
         SELECT ?image ?countryLabel WHERE {{
-            wd:{wd_id} wdt:P31 ?any .
             OPTIONAL {{ wd:{wd_id} wdt:P18 ?image . }}
             OPTIONAL {{
-                wd:{wd_id} wdt:P27|wdt:P19|wdt:P495 ?country .
+                wd:{wd_id} wdt:P27|(wdt:P19/wdt:P17)|wdt:P495 ?country .
                 ?country rdfs:label ?countryLabel .
                 FILTER(lang(?countryLabel) = "en")
             }}
         }} LIMIT 1
-    """)
-    sparql.setReturnFormat(JSON)
-    sparql.agent = "MusicKG_UniversityProject/1.0"
+    """
+
+    # A Wikidata requer um User-Agent mais específico ou bloqueia o pedido
+    headers = {
+        "User-Agent": "MusicKG_UniversityProject/1.0 (mailto:student@ua.pt)",
+        "Accept": "application/sparql-results+json"
+    }
     try:
-        res = sparql.query().convert()['results']['bindings']
-        if res:
-            return {
-                'image': res[0].get('image', {}).get('value'),
-                'country': res[0].get('countryLabel', {}).get('value')
-            }
-    except Exception:
+        r_wd = requests.get("https://query.wikidata.org/sparql", params={"query": sparql_query}, headers=headers,
+                            timeout=10, verify=False)
+        if r_wd.status_code == 200:
+            bindings = r_wd.json().get('results', {}).get('bindings', [])
+            if bindings:
+                return {
+                    'image': bindings[0].get('image', {}).get('value'),
+                    'country': bindings[0].get('countryLabel', {}).get('value')
+                }
+    except Exception as e:
         pass
     return None
 
+
 def main():
-    print("Iniciando Extração Avançada de Dados Externos (Método Lookup API)...")
+    print("Iniciando Extração com Bypass de SSL...")
     artists = get_local_artists(limit=100)
 
     if not artists:
-        print("Erro: Nenhum artista carregado. Verifica o GraphDB.")
+        print("Erro: Nenhum artista carregado.")
         return
 
     g = Graph()
@@ -122,7 +127,13 @@ def main():
 
         if db_data:
             artist_ref = URIRef(uri)
-            g.add((artist_ref, MUSIC.dbpediaAbstract, Literal(db_data['abstract'], lang="en")))
+            raw_abstract = db_data.get('abstract', '')
+            if raw_abstract and ". " in raw_abstract:
+                first_sentence = raw_abstract.split(". ")[0] + "."
+            else:
+                first_sentence = raw_abstract
+
+            g.add((artist_ref, MUSIC.dbpediaAbstract, Literal(first_sentence, lang="en")))
 
             if db_data.get('thumbnail'):
                 g.add((artist_ref, MUSIC.imageUrl, URIRef(db_data['thumbnail'])))
@@ -133,7 +144,7 @@ def main():
 
                 if wd_data:
                     if wd_data.get('image'):
-                        g.add((artist_ref, MUSIC.imageUrl, URIRef(wd_data['image'])))
+                        g.set((artist_ref, MUSIC.imageUrl, URIRef(wd_data['image'])))
                     if wd_data.get('country'):
                         g.add((artist_ref, MUSIC.hometown, Literal(wd_data['country'])))
 
@@ -142,12 +153,12 @@ def main():
         else:
             print("❌ Falhou.")
 
-        time.sleep(0.5)
+        time.sleep(1.0)
 
     out_path = os.path.join(os.path.dirname(__file__), "..", "data", "enrichment.ttl")
     g.serialize(destination=out_path, format="turtle")
-    print(f"\nEnriquecimento concluído! Dados adicionados a {count} artistas.")
-    print(f"Ficheiro guardado em: {out_path}")
+    print(f"\nConcluído! Ficheiro guardado em: {out_path}")
+
 
 if __name__ == "__main__":
     main()
