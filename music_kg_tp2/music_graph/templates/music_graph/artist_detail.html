@@ -142,7 +142,7 @@
                                         <span class="text-[10px] bg-red-600 text-white px-1.5 rounded">⚡ High Energy</span>
                                     {% endif %}
                                 </p>
-                                <p class="text-xs text-text-muted">{{ track.genre|title }} • Energy: {{ track.energy }} • Pop: {{ track.popularity }}</p>
+                                <p class="text-xs text-text-muted">{{ track.genre|title }} • Energy: {{ track.energy }} • Popularity: {{ track.popularity }}</p>
                             </div>
                             <div class="flex gap-2">
                                 <form action="{% url 'delete-track' track.slug %}" method="POST" onsubmit="return confirm('Permanently delete this track?');">
