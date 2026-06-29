@@ -13,15 +13,15 @@
         {% endfor %}
     {% endif %}
 
-    <div class="flex items-center gap-6 mb-8 border-b border-border-col pb-8">
+    <div vocab="http://musickg.org/data/" typeof="Album" resource="http://musickg.org/album/{{ album.slug }}" class="flex items-center gap-6 mb-8 border-b border-border-col pb-8">
         <div class="w-24 h-24 bg-bg-card rounded-lg flex items-center justify-center text-5xl border border-border-col">
             💿
         </div>
         <div>
-            <h1 class="text-4xl font-extrabold text-text-primary mb-2">{{ album.name }}</h1>
+            <h1 property="albumName" class="text-4xl font-extrabold text-text-primary mb-2">{{ album.name }}</h1>
             <p class="text-text-secondary text-lg">
                 By <a href="/artist/{{ album.artist_slug }}" class="text-accent hover:underline">{{ album.artist_name }}</a>
-                • {{ album.year }} • {{ album.track_count }} tracks
+                • <span property="releaseYear">{{ album.year }}</span> • {{ album.track_count }} tracks
             </p>
         </div>
     </div>

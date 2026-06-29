@@ -104,9 +104,11 @@ class _RDFStore:
                 ]
                 for f in files_to_load:
                     self._upload_file(f)
+
+                self.apply_spin_reasoning()
             else:
                 log.info(f"Repository active with {count} triples.")
-                # Tenta carregar a nova arquitetura separada
+
             enrichment_file = data_dir / "enrichment.ttl"
             if enrichment_file.exists():
                 log.info("A aplicar camada de enriquecimento (enrichment.ttl)...")
@@ -193,6 +195,48 @@ class _RDFStore:
         except Exception as e:
             log.error(f"Upload connection error for {file_path.name}: {e}")
             return False
+
+    def apply_spin_reasoning(self) -> bool:
+        """
+        Materializa (executa) as regras SPIN no GraphDB transformando-as em factos reais.
+        Isto injeta as triplas inferidas (?this a music:HighEnergyTrack) diretamente no grafo.
+        """
+        log.info("A executar Motor de Inferência (SPIN Rules)...")
+
+        # Regra 1: High Energy Tracks
+        high_energy_rule = """
+        PREFIX music: <http://musickg.org/data/>
+        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+        INSERT { ?this a music:HighEnergyTrack . }
+        WHERE {
+            ?this a music:Track ;
+                  music:energy ?e .
+            FILTER (xsd:float(?e) > 0.8)
+        }
+        """
+        success_energy = self.execute_sparql_update(high_energy_rule)
+
+        # Regra 2: Trending Artists
+        trending_artist_rule = """
+        PREFIX music: <http://musickg.org/data/>
+        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+        INSERT { ?this a music:TrendingArtist . }
+        WHERE {
+            SELECT ?this WHERE {
+                ?this a music:Artist .
+                ?track music:performedBy ?this ;
+                       music:popularity ?pop .
+            }
+            GROUP BY ?this
+            HAVING (AVG(xsd:float(?pop)) >= 75.0)
+        }
+        """
+        success_trending = self.execute_sparql_update(trending_artist_rule)
+
+        if success_energy and success_trending:
+            log.info("Inferência concluída! Novas triplas geradas com sucesso.")
+            return True
+        return False
 
     def _graphdb_triple_count(self) -> int:
         q = "SELECT (COUNT(*) AS ?c) WHERE { ?s ?p ?o }"
