@@ -203,6 +203,16 @@ class _RDFStore:
         """
         log.info("A executar Motor de Inferência (SPIN Rules)...")
 
+        cleanup_query = """
+                PREFIX music: <http://musickg.org/data/>
+                DELETE { ?album a ?era . }
+                WHERE { 
+                    ?album a ?era . 
+                    FILTER(?era IN (music:ClassicAlbum, music:ModernAlbum, music:TransitionAlbum)) 
+                }
+                """
+        self.execute_sparql_update(cleanup_query)
+
         # Regra 1: High Energy Tracks
         high_energy_rule = """
         PREFIX music: <http://musickg.org/data/>

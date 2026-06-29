@@ -90,7 +90,7 @@ def convert_to_rdf(df: pd.DataFrame) -> Graph:
         a_uri   = BASE[f"artist/{safe_uri_part(row.artist_name)}"]
         t_uri   = BASE[f"track/{safe_uri_part(row.track_id)}"]
         g_uri   = BASE[f"genre/{safe_uri_part(row.genre)}"]
-        alb_uri = BASE[f"album/{safe_uri_part(row.album_name)}"]
+        alb_uri = BASE[f"album/{safe_uri_part(row.artist_name)}_{safe_uri_part(row.album_name)}"]
 
         # Type declarations
         g.add((a_uri, RDF.type, MUSIC.Artist))
