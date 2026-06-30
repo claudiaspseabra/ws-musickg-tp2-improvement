@@ -6,8 +6,20 @@
 music: a owl:Ontology ;
     rdfs:label "Music Knowledge Graph Ontology" .
 
+music:ClassicAlbum a owl:Class ;
+    rdfs:subClassOf music:Album .
+
 music:HighEnergyTrack a owl:Class ;
     rdfs:subClassOf music:Track .
+
+music:ModernAlbum a owl:Class ;
+    rdfs:subClassOf music:Album .
+
+music:PopularTrack a owl:Class ;
+    rdfs:subClassOf music:Track .
+
+music:TransitionAlbum a owl:Class ;
+    rdfs:subClassOf music:Album .
 
 music:TrendingArtist a owl:Class ;
     rdfs:subClassOf music:Artist .
@@ -21,11 +33,24 @@ music:artistName a owl:DatatypeProperty ;
 music:danceability a owl:DatatypeProperty ;
     rdfs:range xsd:float .
 
+music:dbpediaAbstract a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
 music:energy a owl:DatatypeProperty ;
     rdfs:range xsd:float .
 
+music:hasAlbum a owl:ObjectProperty ;
+    rdfs:domain music:Artist ;
+    rdfs:range music:Album .
+
 music:hasTrack a owl:ObjectProperty ;
     owl:inverseOf music:inAlbum .
+
+music:hometown a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+music:imageUrl a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
 
 music:inGenre a owl:ObjectProperty ;
     rdfs:domain music:Track ;
@@ -46,10 +71,11 @@ music:tempo a owl:DatatypeProperty ;
 music:trackName a owl:DatatypeProperty ;
     rdfs:range xsd:string .
 
+music:trackNumber a owl:DatatypeProperty ;
+    rdfs:range xsd:integer .
+
 music:valence a owl:DatatypeProperty ;
     rdfs:range xsd:float .
-
-music:Album a owl:Class .
 
 music:Genre a owl:Class .
 
@@ -62,6 +88,8 @@ music:performedBy a owl:ObjectProperty ;
     rdfs:range music:Artist .
 
 music:Artist a owl:Class .
+
+music:Album a owl:Class .
 
 music:Track a owl:Class .
 

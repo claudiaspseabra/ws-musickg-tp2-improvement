@@ -129,14 +129,14 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
         <div class="lg:col-span-2">
-            <div id="tracks" class="scroll-mt-28">
+            <div id="tracks" class="scroll-mt-28" resource="{{ artist.uri }}">
                 <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">🎵 Tracks in Graph</h2>
                 <div class="bg-bg-card rounded-xl overflow-hidden border border-border-col">
                     {% for track in artist.top_tracks %}
-                    <div class="flex flex-col p-4 border-b border-border-col hover:bg-bg-hover transition-colors group">
+                    <div property="performs" typeof="Track" resource="{{ track.uri }}" class="flex flex-col p-4 border-b border-border-col hover:bg-bg-hover transition-colors group">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="font-bold text-text-primary flex items-center gap-2">
+                                <p property="trackName" class="font-bold text-text-primary flex items-center gap-2">
                                     {{ track.name }}
                                     {% if track.is_high_energy %}
                                         <span class="text-[10px] bg-red-600 text-white px-1.5 rounded">⚡ High Energy</span>
@@ -188,7 +188,7 @@
                 </div>
             </div>
 
-            <div id="albums" class="mt-10 scroll-mt-28">
+            <div id="albums" class="mt-10 scroll-mt-28" resource="{{ artist.uri }}">
                 <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">💿 Albums</h2>
 
                 <div id="add-album" class="mb-6 p-4 bg-bg-secondary rounded-xl border border-accent/30 border-dashed scroll-mt-28">
@@ -210,7 +210,7 @@
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {% for album in artist.albums %}
-                    <div class="p-4 bg-bg-card rounded-xl border border-border-col hover:border-accent transition-colors relative group">
+                    <div property="hasAlbum" typeof="Album" resource="{{ album.uri }}" class="p-4 bg-bg-card rounded-xl border border-border-col hover:border-accent transition-colors relative group">
                         <a href="/album/{{ album.slug }}" class="block">
                             <h3 class="font-bold text-text-primary text-lg truncate">
                                 {{ album.name }}

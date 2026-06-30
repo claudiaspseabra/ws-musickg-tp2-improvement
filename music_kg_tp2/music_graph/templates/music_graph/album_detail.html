@@ -13,7 +13,7 @@
         {% endfor %}
     {% endif %}
 
-    <div vocab="http://musickg.org/data/" typeof="Album" resource="http://musickg.org/album/{{ album.slug }}" class="flex items-center gap-6 mb-8 border-b border-border-col pb-8">
+    <div vocab="http://musickg.org/data/" typeof="Album" resource="{{ album.uri }}" class="flex items-center gap-6 mb-8 border-b border-border-col pb-8">
         <div class="w-24 h-24 bg-bg-card rounded-lg flex items-center justify-center text-5xl border border-border-col">
             💿
         </div>
@@ -107,14 +107,14 @@
     <h2 class="text-2xl font-bold mb-4">🎵 Tracks in Album ({{ album.track_count }})</h2>
     <div class="bg-bg-card rounded-xl border border-border-col divide-y divide-border-col">
         {% for track in album.tracks %}
-        <div class="flex flex-col p-4 border-b border-border-col hover:bg-bg-hover transition-colors last:border-0 group">
+        <div property="hasTrack" typeof="Track" resource="{{ track.uri }}" class="flex flex-col p-4 border-b border-border-col hover:bg-bg-hover transition-colors last:border-0 group">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-4">
                     <div class="w-6 text-center text-text-muted font-mono text-lg font-bold">
                         {{ track.track_number|default:forloop.counter }}
                     </div>
                     <div>
-                        <p class="font-bold text-text-primary">
+                        <p property="trackName" class="font-bold text-text-primary">
                             {{ track.name }}
                             {% if track.is_popular %}
                                 <span class="text-[10px] bg-yellow-500 text-black px-1.5 rounded font-bold">🌟 Hit</span>

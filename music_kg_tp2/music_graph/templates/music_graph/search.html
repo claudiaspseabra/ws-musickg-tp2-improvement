@@ -55,6 +55,12 @@
                             {{ item.name }}
                         </h3>
 
+                        {% if item.artist_name and item.type != 'artist' %}
+                            <p class="text-sm text-text-muted mt-0.5 group-hover:text-white transition-colors">
+                                {{ item.artist_name }}
+                            </p>
+                        {% endif %}
+
                         <span class="inline-block mt-1 text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm
                             {% if item.type == 'artist' %}bg-blue-900/30 text-blue-400 border border-blue-800
                             {% elif item.type == 'album' %}bg-purple-900/30 text-purple-400 border border-purple-800
@@ -76,15 +82,15 @@
             {% if can_create_artist %}
                 <div class="mt-8 p-6 bg-bg-secondary rounded-xl border-2 border-dashed border-accent flex flex-col md:flex-row items-center justify-between gap-4">
                     <div>
-                        <h3 class="text-xl font-bold text-white mb-1">Didn't find "{{ query }}"?</h3>
-                        <p class="text-sm text-text-muted">Our ASK query confirmed this artist doesn't exist in the Graph. Want to add them?</p>
+                        <h3 class="text-xl font-bold text-white mb-1">Didn't find the artist "{{ query }}"?</h3>
+                        <p class="text-sm text-text-muted">This artist doesn't exist in the Graph. Want to add them?</p>
                         <p class="text-sm text-text-muted">Be sure to use proper capitalization.</p>
                     </div>
                     <form action="{% url 'create-artist' %}" method="POST" class="shrink-0">
                         {% csrf_token %}
                         <input type="hidden" name="artist_name" value="{{ query }}">
                         <button type="submit" class="bg-accent text-black font-bold px-6 py-3 rounded-lg hover:bg-accent-hover transition-colors shadow-[0_0_15px_rgba(30,215,96,0.3)]">
-                            ✨ Add "{{ query }}"
+                            Add "{{ query }}"
                         </button>
                     </form>
                 </div>

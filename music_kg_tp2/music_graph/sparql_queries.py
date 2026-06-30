@@ -344,21 +344,40 @@ def full_text_search(query: str, entity_type: Optional[str] = None, limit: int =
         type_filter = f'FILTER(?type = "{entity_type}")'
 
     graph_q = _PREFIXES + f"""
-    SELECT DISTINCT ?uri ?name ?type ?slug WHERE {{
-        {{ ?uri music:artistName ?name . BIND("artist" AS ?type) }}
-        UNION 
-        {{ ?uri music:trackName ?name . BIND("track" AS ?type) }}
-        UNION 
-        {{ ?uri music:albumName ?name . BIND("album" AS ?type) }}
+        SELECT DISTINCT ?uri ?name ?type ?slug ?artistName WHERE {{
+            {{ 
+                ?uri music:artistName ?name . 
+                BIND("artist" AS ?type) . BIND("" AS ?artistName) 
+            }}
+            UNION 
+            {{ 
+                ?uri music:trackName ?name . 
+                BIND("track" AS ?type) .
+                OPTIONAL {{ ?uri music:performedBy ?a . ?a music:artistName ?artistName . }} 
+            }}
+            UNION 
+            {{ 
+                ?uri music:albumName ?name . 
+                BIND("album" AS ?type) .
+                # Procuramos o artista que tem este álbum através da propriedade hasAlbum
+                OPTIONAL {{ ?a music:hasAlbum ?uri . ?a music:artistName ?artistName . }} 
+            }}
 
-        BIND(REPLACE(STR(?uri), "^.*[/#]", "") AS ?slug)
-        FILTER(CONTAINS(LCASE(STR(?name)), "{q_lower}"))
-        {type_filter}
-    }} LIMIT {limit}
-    """
+            BIND(REPLACE(STR(?uri), "^.*[/#]", "") AS ?slug)
+            FILTER(CONTAINS(LCASE(STR(?name)), "{q_lower}"))
+            {type_filter}
+        }} 
+        LIMIT {limit}
+        """
     graph_rows = store.execute_sparql(graph_q)
-    results = [{"type": str(r["type"]), "uri": str(r["uri"]), "slug": str(r["slug"]), "name": str(r["name"])} for r in
-               graph_rows]
+    results = [
+        {
+            "type": str(r["type"]),
+            "uri": str(r["uri"]),
+            "slug": str(r["slug"]),
+            "name": str(r["name"]),
+            "artist_name": str(r.get("artistName", ""))
+        } for r in graph_rows]
 
     return {"results": results, "total_count": len(results)}
 

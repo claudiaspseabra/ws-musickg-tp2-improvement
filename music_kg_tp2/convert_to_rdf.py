@@ -27,13 +27,19 @@ def build_ontology() -> Graph:
     g.add((MUSIC[""], RDFS.label, Literal("Music Knowledge Graph Ontology")))
 
     # Core Classes
-    classes = ["Artist", "Track", "Album", "Genre", "TrendingArtist", "HighEnergyTrack"]
+    classes = ["Artist", "Track", "Album", "Genre",
+               "TrendingArtist", "HighEnergyTrack", "PopularTrack",
+               "ClassicAlbum", "ModernAlbum", "TransitionAlbum"]
     for cls in classes:
         g.add((MUSIC[cls], RDF.type, OWL.Class))
         
     # Subclasses (Prepared for SPIN later)
     g.add((MUSIC.TrendingArtist, RDFS.subClassOf, MUSIC.Artist))
     g.add((MUSIC.HighEnergyTrack, RDFS.subClassOf, MUSIC.Track))
+    g.add((MUSIC.PopularTrack, RDFS.subClassOf, MUSIC.Track))
+    g.add((MUSIC.ClassicAlbum, RDFS.subClassOf, MUSIC.Album))
+    g.add((MUSIC.ModernAlbum, RDFS.subClassOf, MUSIC.Album))
+    g.add((MUSIC.TransitionAlbum, RDFS.subClassOf, MUSIC.Album))
 
     # Object Properties & Inverses (Pure OWL Inference)
     # Track -> performedBy -> Artist  <=>  Artist -> performs -> Track
@@ -52,6 +58,10 @@ def build_ontology() -> Graph:
     g.add((MUSIC.hasTrack, RDF.type, OWL.ObjectProperty))
     g.add((MUSIC.hasTrack, OWL.inverseOf, MUSIC.inAlbum))
 
+    g.add((MUSIC.hasAlbum, RDF.type, OWL.ObjectProperty))
+    g.add((MUSIC.hasAlbum, RDFS.domain, MUSIC.Artist))
+    g.add((MUSIC.hasAlbum, RDFS.range, MUSIC.Album))
+
     # Track -> inGenre -> Genre
     g.add((MUSIC.inGenre, RDF.type, OWL.ObjectProperty))
     g.add((MUSIC.inGenre, RDFS.domain, MUSIC.Track))
@@ -60,7 +70,8 @@ def build_ontology() -> Graph:
     # Data Properties
     data_props = {
         "trackName": XSD.string, "artistName": XSD.string, "albumName": XSD.string,
-        "releaseYear": XSD.integer, "popularity": XSD.integer, 
+        "dbpediaAbstract": XSD.string, "hometown": XSD.string, "imageUrl": XSD.string,
+        "releaseYear": XSD.integer, "popularity": XSD.integer, "trackNumber": XSD.integer,
         "energy": XSD.float, "danceability": XSD.float, "valence": XSD.float, "tempo": XSD.float
     }
     for prop, datatype in data_props.items():
@@ -103,6 +114,8 @@ def convert_to_rdf(df: pd.DataFrame) -> Graph:
         g.add((t_uri, MUSIC.performedBy, a_uri))
         g.add((t_uri, MUSIC.inGenre, g_uri))
         g.add((t_uri, MUSIC.inAlbum, alb_uri))
+
+        g.add((a_uri, MUSIC.hasAlbum, alb_uri))
 
         g.add((a_uri, MUSIC.artistName, Literal(row.artist_name, datatype=XSD.string)))
         g.add((g_uri, MUSIC.label, Literal(row.genre, datatype=XSD.string)))

@@ -50,7 +50,7 @@ music:ClassifyReleaseEraRule a sp:Construct,
                   music:releaseYear ?year .
             BIND(xsd:integer(?year) AS ?releaseYear)
             BIND(
-                IF(?releaseYear >= 2000, music:ModernAlbum,
+                IF(?releaseYear >= 2010, music:ModernAlbum,
                   IF(?releaseYear < 2000, music:ClassicAlbum, music:TransitionAlbum)
                 ) AS ?albumClass
             )

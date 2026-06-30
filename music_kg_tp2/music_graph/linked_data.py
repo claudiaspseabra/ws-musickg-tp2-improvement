@@ -13,7 +13,7 @@ MUSIC = Namespace("http://musickg.org/data/")
 LOCAL_SPARQL = "http://localhost:7200/repositories/music-kg-tp2"
 
 
-def get_local_artists(limit=100):
+def get_local_artists(limit=10000):
     wrapper = SPARQLWrapper(LOCAL_SPARQL)
     wrapper.setQuery(
         f"PREFIX music: <http://musickg.org/data/> SELECT ?artistUri ?name WHERE {{ ?artistUri a music:Artist ; music:artistName ?name . }} LIMIT {limit}")
@@ -110,7 +110,7 @@ def query_wikidata(wikidata_uri):
 
 def main():
     print("Iniciando Extração com Bypass de SSL...")
-    artists = get_local_artists(limit=100)
+    artists = get_local_artists(limit=10000)
 
     if not artists:
         print("Erro: Nenhum artista carregado.")
