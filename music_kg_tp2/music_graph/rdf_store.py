@@ -87,15 +87,12 @@ class _RDFStore:
             self._use_graphdb = True
             data_dir = nt_path.parent
 
-            # 3. Check data and perform upload if EXACTLY empty
             count = self._graphdb_triple_count()
 
             if count < 500:
                 log.info("Repository appears empty or incomplete. Starting automated data pipeline...")
                 data_dir = nt_path.parent
 
-                # A ordem de importação é importante:
-                # 1º Ontologia (Schema), 2º Factos (Dados), 3º Regras SPIN (Inferência)
                 files_to_load = [
                     data_dir / "ontology.ttl",
                     data_dir / "facts_only.nt",
@@ -111,7 +108,7 @@ class _RDFStore:
 
             enrichment_file = data_dir / "enrichment.ttl"
             if enrichment_file.exists():
-                log.info("A aplicar camada de enriquecimento (enrichment.ttl)...")
+                log.info("Applying enrichment layer (enrichment.ttl)...")
                 self._upload_file(enrichment_file)
 
             return True
@@ -164,12 +161,11 @@ class _RDFStore:
             log.warning(f"File not found for upload: {file_path}")
             return False
 
-        # Detetar o formato correto para o GraphDB não rejeitar o ficheiro
         ext = file_path.suffix.lower()
         if ext == '.ttl':
             content_type = 'text/turtle'
         elif ext in ['.nt', '.ntriples']:
-            content_type = 'text/plain'  # GraphDB aceita text/plain para N-Triples
+            content_type = 'text/plain'
         elif ext in ['.rdf', '.xml']:
             content_type = 'application/rdf+xml'
         else:
@@ -198,10 +194,10 @@ class _RDFStore:
 
     def apply_spin_reasoning(self) -> bool:
         """
-        Materializa (executa) as regras SPIN no GraphDB transformando-as em factos reais.
-        Isto injeta as triplas inferidas (?this a music:HighEnergyTrack) diretamente no grafo.
+        It materializes (executes) the SPIN rules in GraphDB, transforming them into real facts.
         """
-        log.info("A executar Motor de Inferência (SPIN Rules)...")
+
+        log.info("Running Inference Engine (SPIN Rules)...")
 
         cleanup_query = """
             PREFIX music: <http://musickg.org/data/>
@@ -213,7 +209,7 @@ class _RDFStore:
         """
         self.execute_sparql_update(cleanup_query)
 
-        # Regra 1: High Energy Tracks
+        # Rule 1: High Energy Tracks
         high_energy_rule = """
         PREFIX music: <http://musickg.org/data/>
         PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -226,7 +222,7 @@ class _RDFStore:
         """
         success_energy = self.execute_sparql_update(high_energy_rule)
 
-        # Regra 2: Trending Artists
+        # Rule 2: Trending Artists
         trending_artist_rule = """
         PREFIX music: <http://musickg.org/data/>
         PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -243,7 +239,7 @@ class _RDFStore:
         """
         success_trending = self.execute_sparql_update(trending_artist_rule)
 
-        # Regra 3: Popular Tracks (Hits)
+        # Rule 3: Popular Tracks (Hits)
         popular_track_rule = """
                 PREFIX music: <http://musickg.org/data/>
                 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -255,7 +251,7 @@ class _RDFStore:
                 """
         success_popular = self.execute_sparql_update(popular_track_rule)
 
-        # Regra 4: Release Era para Álbuns (Classic, Transition, Modern)
+        # Rule 4: Album Release Era
         era_album_rule = """
                 PREFIX music: <http://musickg.org/data/>
                 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -274,7 +270,7 @@ class _RDFStore:
         success_era = self.execute_sparql_update(era_album_rule)
 
         if success_energy and success_trending and success_popular and success_era:
-            log.info("Inferência concluída! Novas triplas geradas com sucesso.")
+            log.info("Inference complete! New triples successfully generated.")
             return True
         return False
 

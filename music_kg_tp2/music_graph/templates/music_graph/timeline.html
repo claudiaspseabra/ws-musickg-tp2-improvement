@@ -66,20 +66,16 @@ document.addEventListener('DOMContentLoaded', function() {
     btn.addEventListener('click', function(e) {
         e.preventDefault();
 
-        // Change button text to show loading state
         const originalText = btn.innerText;
         btn.innerText = "Loading...";
         btn.disabled = true;
 
-        // Get current filter states
         const offset = this.getAttribute('data-offset');
         const decade = this.getAttribute('data-decade');
         const letter = this.getAttribute('data-letter');
 
-        // Build the URL with existing filters
         const url = `?offset=${offset}&decade=${decade}&letter=${letter}`;
 
-        // Fetch new data as JSON
         fetch(url, {
             headers: {
                 'Accept': 'application/json',
@@ -90,7 +86,6 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             const grid = document.getElementById('timeline-grid');
 
-            // Loop through new albums and append HTML to the grid
             data.albums.forEach(album => {
                 const cardHtml = `
                     <div class="bg-bg-card p-4 rounded-xl border border-border-col hover:border-accent transition-colors">
@@ -101,7 +96,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 grid.insertAdjacentHTML('beforeend', cardHtml);
             });
 
-            // Update the offset for the next click, or hide the button if no more data
             if (data.next_offset) {
                 this.setAttribute('data-offset', data.next_offset);
                 btn.innerText = originalText;

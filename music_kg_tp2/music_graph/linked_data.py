@@ -6,7 +6,6 @@ from rdflib import Graph, Namespace, Literal, URIRef
 from SPARQLWrapper import SPARQLWrapper, JSON
 from rdflib.namespace import RDF, OWL
 
-# Desativa os avisos vermelhos de SSL no terminal
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 MUSIC = Namespace("http://musickg.org/data/")
@@ -30,7 +29,6 @@ def query_dbpedia_robust(artist_name):
     headers = {"User-Agent": "MusicKG_UniversityProject/1.0"}
 
     try:
-        # 1. Lookup Inicial (requests com verify=False)
         response = requests.get(url, headers=headers, timeout=10, verify=False).json()
         if not response.get('docs'): return None
 
@@ -38,7 +36,6 @@ def query_dbpedia_robust(artist_name):
         resource_uri = best_match['resource'][0]
         short_abstract = best_match.get('comment', [''])[0]
 
-        # 2. SPARQL via requests (Contorna os erros do SPARQLWrapper)
         sparql_query = f"""
             PREFIX owl: <http://www.w3.org/2002/07/owl#>
             PREFIX dbo: <http://dbpedia.org/ontology/>
@@ -76,7 +73,6 @@ def query_dbpedia_robust(artist_name):
 def query_wikidata(wikidata_uri):
     wd_id = wikidata_uri.split("/")[-1]
 
-    # A magia acontece aqui na linha do ?country: adicionámos (wdt:P19/wdt:P17)
     sparql_query = f"""
         SELECT ?image ?countryLabel WHERE {{
             OPTIONAL {{ wd:{wd_id} wdt:P18 ?image . }}
@@ -88,7 +84,6 @@ def query_wikidata(wikidata_uri):
         }} LIMIT 1
     """
 
-    # A Wikidata requer um User-Agent mais específico ou bloqueia o pedido
     headers = {
         "User-Agent": "MusicKG_UniversityProject/1.0 (mailto:student@ua.pt)",
         "Accept": "application/sparql-results+json"
@@ -109,11 +104,11 @@ def query_wikidata(wikidata_uri):
 
 
 def main():
-    print("Iniciando Extração com Bypass de SSL...")
+    print("Starting Extraction with SSL Bypass...")
     artists = get_local_artists(limit=10000)
 
     if not artists:
-        print("Erro: Nenhum artista carregado.")
+        print("Error: No artists loaded.")
         return
 
     g = Graph()
@@ -122,7 +117,7 @@ def main():
 
     count = 0
     for uri, name in artists:
-        print(f"A pesquisar: {name} ...", end=" ")
+        print(f"Searching: {name} ...", end=" ")
         db_data = query_dbpedia_robust(name)
 
         if db_data:
@@ -149,15 +144,15 @@ def main():
                         g.add((artist_ref, MUSIC.hometown, Literal(wd_data['country'])))
 
             count += 1
-            print("✅ Encontrado!")
+            print("Found!")
         else:
-            print("❌ Falhou.")
+            print("❌ Failed.")
 
         time.sleep(1.0)
 
     out_path = os.path.join(os.path.dirname(__file__), "..", "data", "enrichment.ttl")
     g.serialize(destination=out_path, format="turtle")
-    print(f"\nConcluído! Ficheiro guardado em: {out_path}")
+    print(f"\nCompleted! File saved to: {out_path}")
 
 
 if __name__ == "__main__":

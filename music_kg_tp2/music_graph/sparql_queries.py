@@ -79,7 +79,6 @@ def get_artist_detail(artist: str) -> Optional[Dict]:
     artist_slug = artist.strip()
     artist_ref = f"<http://musickg.org/artist/{artist_slug}>"
 
-    # FASE 3 E 4: Obter os dados da DBpedia/Wikidata E as inferências SPIN!
     basic_q = _PREFIXES + f"""
         SELECT ?name ?abstract ?image ?hometown ?isTrending WHERE {{
             {artist_ref} music:artistName ?name .
@@ -100,7 +99,6 @@ def get_artist_detail(artist: str) -> Optional[Dict]:
     hometown = str(r0.get("hometown", ""))
     is_trending = bool(r0.get("isTrending", False))
 
-    # Tracks, genres E INFERÊNCIAS SPIN (HighEnergyTrack)
     tracks_q = _PREFIXES + f"""
         SELECT ?trackUri ?trackName ?isHighEnergy ?isPopular (GROUP_CONCAT(DISTINCT ?genreLabel; SEPARATOR=", ") AS ?genres) (SAMPLE(?energy) AS ?trackEnergy) (SAMPLE(?pop) AS ?trackPop)
         WHERE {{
@@ -140,7 +138,6 @@ def get_artist_detail(artist: str) -> Optional[Dict]:
             "is_popular": bool(r.get("isPopular", False)),
         })
 
-    # (O código para Albums e similar_artists mantém-se exatamente igual a partir daqui...)
     album_q = _PREFIXES + f"""
         SELECT ?albumUri ?albumName ?year ?eraClass (COUNT(DISTINCT ?track) AS ?trackCount) WHERE {{
             ?albumUri music:albumName ?albumName .
@@ -189,10 +186,10 @@ def get_artist_detail(artist: str) -> Optional[Dict]:
         "uri": artist_ref.strip("<>"),
         "slug": artist_slug,
         "name": name,
-        "abstract": abstract,  # Vindo da DBpedia
-        "image_url": image_url,  # Vindo da Wikidata
-        "hometown": hometown,  # Vindo da Wikidata
-        "is_trending": is_trending,  # Vindo das regras SPIN
+        "abstract": abstract,
+        "image_url": image_url,
+        "hometown": hometown,
+        "is_trending": is_trending,
         "genres": list(genres_set),
         "top_tracks": top_tracks,
         "albums": albums,
@@ -359,7 +356,6 @@ def full_text_search(query: str, entity_type: Optional[str] = None, limit: int =
             {{ 
                 ?uri music:albumName ?name . 
                 BIND("album" AS ?type) .
-                # Procuramos o artista que tem este álbum através da propriedade hasAlbum
                 OPTIONAL {{ ?a music:hasAlbum ?uri . ?a music:artistName ?artistName . }} 
             }}
 

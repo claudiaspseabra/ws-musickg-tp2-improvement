@@ -24,7 +24,6 @@ def build_spin_rules() -> Graph:
     graph.bind("sp", SP)
 
     # Rule 1: High Energy Track Classification
-    # Demonstrates mathematical condition filtering
     add_construct_rule(
         graph,
         MUSIC.Track,
@@ -45,7 +44,6 @@ def build_spin_rules() -> Graph:
     )
 
     # Rule 2: Trending Artist Classification
-    # Demonstrates complex SPARQL aggregation (AVG) in SPIN rules
     add_construct_rule(
         graph,
         MUSIC.Artist,
@@ -88,7 +86,7 @@ def build_spin_rules() -> Graph:
         """
     )
 
-    # Rule 4: Release Era Classification for Albums (Classic vs Modern)
+    # Rule 4: Release Era Classification for Albums
     add_construct_rule(
         graph,
         MUSIC.Album,
@@ -98,7 +96,7 @@ def build_spin_rules() -> Graph:
         PREFIX music: <http://musickg.org/data/>
         PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
         CONSTRUCT {
-            ?this a music:ClassicAlbum . # O construtor base mapeia a assinatura da regra
+            ?this a music:ClassicAlbum . 
         }
         WHERE {
             ?this a music:Album ;

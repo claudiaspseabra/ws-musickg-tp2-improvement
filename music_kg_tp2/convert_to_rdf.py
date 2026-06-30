@@ -33,7 +33,7 @@ def build_ontology() -> Graph:
     for cls in classes:
         g.add((MUSIC[cls], RDF.type, OWL.Class))
         
-    # Subclasses (Prepared for SPIN later)
+    # Subclasses (SPIN)
     g.add((MUSIC.TrendingArtist, RDFS.subClassOf, MUSIC.Artist))
     g.add((MUSIC.HighEnergyTrack, RDFS.subClassOf, MUSIC.Track))
     g.add((MUSIC.PopularTrack, RDFS.subClassOf, MUSIC.Track))
@@ -41,7 +41,6 @@ def build_ontology() -> Graph:
     g.add((MUSIC.ModernAlbum, RDFS.subClassOf, MUSIC.Album))
     g.add((MUSIC.TransitionAlbum, RDFS.subClassOf, MUSIC.Album))
 
-    # Object Properties & Inverses (Pure OWL Inference)
     # Track -> performedBy -> Artist  <=>  Artist -> performs -> Track
     g.add((MUSIC.performedBy, RDF.type, OWL.ObjectProperty))
     g.add((MUSIC.performedBy, RDFS.domain, MUSIC.Track))
@@ -143,20 +142,16 @@ def main(csv_path: str, data_dir: str) -> None:
     facts_graph = convert_to_rdf(df)
     onto_graph = build_ontology()
 
-    # Integrated Graph (Ontology + Facts)
     combined_graph = Graph()
     combined_graph += facts_graph
     combined_graph += onto_graph
 
     os.makedirs(data_dir, exist_ok=True)
     
-    # 1. Facts only (for clean separation)
     facts_graph.serialize(destination=os.path.join(data_dir, "facts_only.nt"), format="nt")
     
-    # 2. Ontology only (for Protégé and GraphDB schema import)
     onto_graph.serialize(destination=os.path.join(data_dir, "ontology.ttl"), format="turtle")
     
-    # 3. Combined Graph (for the Django app auto-load functionality)
     combined_graph.serialize(destination=os.path.join(data_dir, "music_kg.nt"), format="nt")
     
     log.info("Files generated successfully: 'facts_only.nt', 'ontology.ttl', 'music_kg.nt'")
